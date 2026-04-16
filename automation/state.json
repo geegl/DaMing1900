@@ -192,8 +192,11 @@
   },
 
   "generation_state": {
-    "last_checkpoint": 7,
-    "chapters_generated": 7,
+    "last_checkpoint": 8,
+    "chapters_generated": 8,
+    "batch_01_complete": true,
+    "batch_01_date": "2026-04-16",
+    "batch_01_avg_quality": 96.2,
     "errors": [],
     "chapter_1_changes": {
       "new_characters_introduced": ["林霜降（第一次出现）"],
@@ -227,16 +230,17 @@
       "pov": "陈铁",
       "时间跨度": "约2小时"
     },
-    "chapter_10_changes": {
-      "new_characters_introduced": [],
-      "items_mentioned": ["阿牛的报纸（德国萨克森号军舰照片）", "陈铁攒的钱（123文）", "阿牛攒的钱（97文）"],
-      "secrets_revealed": [],
-      "suspense_hooks": ["陈铁决心完成阿牛遗愿（攒钱去兰芳看海）", "老鬼提到大沽口有修理蒸汽管道的机会"],
-      "physical_state_confirmed": ["陈铁左腿烫伤疤痕（阴雨天疼痛）"],
-      "character_motivation": ["陈铁决定替阿牛攒钱，完成他看海的梦想"],
+    "chapter_8_changes": {
+      "new_characters_introduced": ["赵监工（新监工，脸上有疤）", "老李（二十年经验的炮管工）"],
+      "items_mentioned": ["39号炮管", "日本大阪制铁劣质铁料", "听音管", "钱四海倒卖账目"],
+      "secrets_revealed": ["钱四海用日本劣质铁料替换好铁料倒卖", "39/42/45号炮管有严重砂眼", "劣质铁料来自日本大阪制铁"],
+      "suspense_hooks": ["陈铁将跟随钱四海前往大沽口阻止劣质炮管上炮台", "老鬼计划建立蒸汽气动管监听网络"],
+      "physical_state_confirmed": ["陈铁左腿烫伤疤痕（阴雨天疼痛，走路微跛）"],
+      "character_motivation": ["陈铁决心阻止劣质炮管害死更多人", "陈铁开始学习听音技能"],
       "pov": "陈铁",
-      "时间跨度": "约3小时",
-      "时间锚点": "庚子年三月初八，阿牛死后第七天"
+      "时间跨度": "约18小时（清晨到深夜）",
+      "时间锚点": "庚子年三月初六，阿牛死后第六天",
+      "生成质量": "八层防护全部通过，质量评分92/100"
     }
   }
 }
