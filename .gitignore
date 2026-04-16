@@ -1,0 +1,54 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# 编辑器
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+
+# 备份文件
+*.backup
+*.bak
+*_backup.*
+
+# 临时文件
+*.tmp
+*.temp
+
+# 日志
+*.log
+
+# 大文件（如果需要）
+# *.pdf
+# *.epub
+
+# Node modules（如果有）
+node_modules/
+
+# 环境变量
+.env
+.env.local
+
+# 编译文件
+*.pyc
+*.pyo
+
+# 打包文件
+*.zip
+*.tar.gz
+*.rar
