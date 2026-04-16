@@ -2,7 +2,7 @@
   "project": "大明1900",
   "version": "4.2",
   "total_chapters": 220,
-  "current_chapter": 7,
+  "current_chapter": 10,
 
   "characters": {
     "陈铁": {
@@ -226,6 +226,17 @@
       "character_motivation": ["陈铁决定攒钱去兰芳，实现阿牛遗愿，亲眼看看没有皇帝的地方"],
       "pov": "陈铁",
       "时间跨度": "约2小时"
+    },
+    "chapter_10_changes": {
+      "new_characters_introduced": [],
+      "items_mentioned": ["阿牛的报纸（德国萨克森号军舰照片）", "陈铁攒的钱（123文）", "阿牛攒的钱（97文）"],
+      "secrets_revealed": [],
+      "suspense_hooks": ["陈铁决心完成阿牛遗愿（攒钱去兰芳看海）", "老鬼提到大沽口有修理蒸汽管道的机会"],
+      "physical_state_confirmed": ["陈铁左腿烫伤疤痕（阴雨天疼痛）"],
+      "character_motivation": ["陈铁决定替阿牛攒钱，完成他看海的梦想"],
+      "pov": "陈铁",
+      "时间跨度": "约3小时",
+      "时间锚点": "庚子年三月初八，阿牛死后第七天"
     }
   }
 }
