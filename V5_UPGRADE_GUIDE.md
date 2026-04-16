@@ -19,22 +19,28 @@
 
 ## 🔧 安装步骤
 
-### 步骤一：移动Claude Skill文件
+### ✅ 已完成：项目级CLAUDE.md
 
-**在项目根目录运行**：
+**文件已自动配置**：
+- 位置：`CLAUDE.md`（项目根目录）
+- 作用范围：仅《大明1900》项目
+- 启动Claude Code时自动加载
 
-```bash
-# 创建Skills目录
-mkdir -p .claude/skills
+**无需任何手动操作！**
 
-# 移动文件
-mv docs/CLAUDE_Skill_v5.0.md .claude/skills/daming1900-skill.md
-```
+---
 
-**效果**：
-- Claude Code启动时自动加载
-- 所有规则永久锁定
-- 无需每次手动指定
+### 📝 项目级 vs 全局级
+
+| 配置方式 | 文件位置 | 影响范围 | 推荐度 |
+|---------|---------|---------|--------|
+| **项目级** | `./CLAUDE.md` | 仅本项目 | ✅ **推荐** |
+| 全局级 | `~/.claude/skills/` | 所有项目 | ⚠️ 谨慎使用 |
+
+**我们选择项目级配置**：
+- ✅ 不影响其他项目
+- ✅ 配置随项目移动
+- ✅ Claude Code自动识别
 
 ---
 
@@ -180,8 +186,10 @@ python3 automation/scripts/pipeline_v5.py --chapter 2
 
 ```
 DaMing1900/
-├── .claude/skills/
-│   └── daming1900-skill.md      ← Claude Skill（需移动）
+├── CLAUDE.md                    ← 项目级Claude Skill（自动加载）
+├── README.md                    ← 项目主页
+├── V5_UPGRADE_GUIDE.md          ← 升级指南
+│
 ├── docs/
 │   ├── 00-宪法层/
 │   │   └── Daming1900_Bible.md
@@ -192,6 +200,7 @@ DaMing1900/
 │   │   └── Reference_Text_Library.md  ← 参考文本库
 │   └── 04-质控层/
 │       └── Daming1900_Engine_Rules.md
+│
 ├── automation/
 │   ├── state.json
 │   ├── character_physical_profiles.json
@@ -205,9 +214,9 @@ DaMing1900/
 │       ├── quality_checker.py
 │       ├── visual_pov_guard.py
 │       └── generate_daily_report.py
-├── chapters/
-│   └── 第001章_煤烟落在米饭上.md
-└── README.md
+│
+└── chapters/
+    └── 第001章_煤烟落在米饭上.md
 ```
 
 ---
@@ -216,26 +225,20 @@ DaMing1900/
 
 **总制片，v5.0已准备就绪！请选择：**
 
-1. **立即移动Skill文件**
-   ```bash
-   mkdir -p .claude/skills
-   mv docs/CLAUDE_Skill_v5.0.md .claude/skills/daming1900-skill.md
-   ```
-
-2. **测试v5.0工作流**
+1. **测试v5.0工作流**
    ```bash
    python3 automation/scripts/pipeline_v5.py --chapter 2
    ```
 
-3. **查看GitHub仓库**
+2. **查看GitHub仓库**
    - 访问：https://github.com/geegl/DaMing1900
    - 查看所有文件和进度
 
-4. **继续生成第2章**
+3. **继续生成第2章**
    - 使用v5.0的子代理模式
    - 自动注入参考文本
    - 八层防护100%通过
 
 ---
 
-**总制片，《大明1900》v5.0已彻底就绪！现在拥有2026年最新的Claude Code工作流，可以开始高效长跑创作了！** 🎋⚔️
+**总制片，《大明1900》v5.0已彻底就绪！项目级CLAUDE.md已自动配置，启动Claude Code时自动加载所有规则！** 🎋⚔️
