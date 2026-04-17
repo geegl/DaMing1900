@@ -71,8 +71,60 @@
 2. **POV lock**: Did Chen Tie only observe, not diagnose political conspiracies?
 3. **Ming accuracy**: Any Qing/Modern terms? Run `grep -i "总督\|巡抚\|手机" chapter.md`
 4. **AI flavor**: Any prohibited phrases? Run `grep -i "微微\|淡淡\|心头一颤" chapter.md`
+5. **File naming**: All chapters must use format `第XXX章_标题.md` (3-digit zero-padded).
 
 **Loop until all checks pass.**
+
+---
+
+## 6. Token Economy
+
+**Every file should be concise. No redundancy.**
+
+- CLAUDE.md < 100 lines
+- Bible.md < 300 lines
+- Master Outline < 300 lines
+- Use imperative language, not explanatory prose
+- Delete all example code blocks
+
+**The test**: Can I cut 30% without losing meaning? If yes, cut.
+
+---
+
+## 7. Model Allocation
+
+**Use the right model for the right task.**
+
+- Planning/checking: Haiku (fast, cheap)
+- Writing: Sonnet (creative, balanced)
+- Complex reasoning: Opus (slow, expensive)
+
+**Never use Opus for all tasks.** This wastes tokens.
+
+---
+
+## 8. Batch Protocol
+
+**After every batch (10 chapters):**
+
+1. Update `README.md` (progress)
+2. Update `automation/state.json`
+3. Update `progress/CURRENT.md`
+4. Git commit and push
+
+**The test**: Can I resume after context reset? If no, batch incomplete.
+
+---
+
+## 9. No False Claims
+
+**Never say "completed" without verification.**
+
+- Run verification script
+- Show actual output
+- Only claim success after passing all checks
+
+**The test**: Did I verify? If no, don't say "completed."
 
 ---
 
