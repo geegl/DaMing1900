@@ -20,11 +20,11 @@ class DamingPipeline8Agents:
             return json.load(f)
 
     def load_bible(self):
-        with open("docs/00-宪法层/Daming1900_Bible.md", "r", encoding="utf-8") as f:
+        with open("docs/Daming1900_Bible.md", "r", encoding="utf-8") as f:
             return f.read()
 
     def load_protection_rules(self):
-        with open("docs/04-质控层/Daming1900_Engine_Rules.md", "r", encoding="utf-8") as f:
+        with open("docs/CHAPTER_ENGINE.md", "r", encoding="utf-8") as f:
             return f.read()
 
     def run_full_pipeline(self, chapter_num: int):
@@ -88,7 +88,7 @@ class DamingPipeline8Agents:
     def agent_planning(self, chapter_num):
         """规划代理：输出Beat Sheet + 伏笔更新【MODEL: haiku】"""
         # 读取大纲
-        with open("docs/01-规划层/Daming1900_Master_Outline.md", "r", encoding="utf-8") as f:
+        with open("docs/Daming1900_Master_Outline.md", "r", encoding="utf-8") as f:
             outline = f.read()
 
         # 读取伏笔账本
