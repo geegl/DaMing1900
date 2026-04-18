@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch",
+      "Bash(mkdir -p ~/.claude/skills)",
+      "Bash(git clone *)",
+      "Bash(cat)",
+      "Bash(chmod +x /Users/roven/Documents/Trae/DaMing/.git/hooks/post-commit)"
+    ]
+  }
+}
