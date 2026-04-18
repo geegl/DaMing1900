@@ -2,7 +2,7 @@
   "project": "大明1900",
   "version": "5.0",
   "total_chapters": 220,
-  "current_chapter": 6,
+  "current_chapter": 10,
 
   "characters": {
     "陈铁": {
@@ -160,7 +160,7 @@
     "时间": {
       "年份": 1900,
       "月份": 10,
-      "日期": 11
+      "日期": 15
     },
     "当前事件": "八国联军集结大沽口外",
     "地点状态": {
@@ -186,8 +186,8 @@
   },
 
   "generation_state": {
-    "last_checkpoint": 6,
-    "chapters_generated": 6,
+    "last_checkpoint": 10,
+    "chapters_generated": 10,
     "errors": []
   }
 }
