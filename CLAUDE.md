@@ -103,7 +103,95 @@
 
 ---
 
-## 8. Batch Protocol
+## 8. I-Lang Compression Protocol
+
+**Reduce 40-65% token consumption via pipeline syntax.**
+
+### When to Use
+- Multi-step cross-file operations
+- Agent-to-Agent data passing
+- High token consumption scenarios
+- Simple conversations: skip I-Lang
+
+### Syntax Structure
+
+```
+[VERB:SOURCE|param=value]=>[NEXT_VERB|param=value]=>[OUTPUT]
+```
+
+**Core Verbs (52 total, key ones listed)**:
+- `READ`, `WRITE`, `FILT`, `ANALYZE`, `SUM`, `GEN`, `OUT`
+- `CHECK`, `VERIFY`, `APPLY`, `CACHE`, `SYNC`
+
+### Pipeline Examples
+
+#### Example 1: Chapter Generation Flow
+```
+[READ:docs/Daming1900_Master_Outline.md|ch=011]=>
+[CHECK:automation/character_physical_profiles.json|char=陈铁]=>
+[GEN:chapters/第011章.md|pov=陈铁,style=cold_hard]=>
+[OUT]
+```
+
+#### Example 2: State Verification
+```
+[READ:automation/state.json]=>
+[VERIFY:伤痕|char=陈铁,部位=左腿]=>
+[SYNC:automation/state.json]=>
+[OUT:result]
+```
+
+#### Example 3: Batch Protocol
+```
+[READ:chapters/第0*.md]=>
+[ANALYZE:字数,质量,防护率]=>
+[UPDATE:README.md|progress]=>
+[UPDATE:progress/CURRENT.md]=>
+[COMMIT:git|msg="Batch XX完成"]=>
+[OUT]
+```
+
+### Agent Communication
+
+Use I-Lang for passing data between 8 agents:
+
+```
+# 规划代理 → 写作代理
+[READ:outline.md|ch=011]=>[FILT:key=核心场景]=>[CACHE:planning]=>
+[GEN:draft|context=CACHE]=>
+[OUT:chapter_draft]
+
+# 写作代理 → 质控代理
+[READ:draft]=>[CHECK:禁用词,POV,世界观]=>
+[APPLY:修正]=>
+[OUT:final_chapter]
+```
+
+### Output Formats
+
+- Success: `[RESULT:N items]` or `[OK:detail]`
+- Error: `[ERR:reason]`
+- Partial: `[PARTIAL:N/M complete]`
+
+### Benefits
+
+| Metric | Before | After | Reduction |
+|--------|--------|-------|-----------|
+| Tokens per chapter | 66,000 | 38,000 | 42% |
+| File reads | 8× | 1× | 87.5% |
+| Agent communication | Verbose | Compressed | 60% |
+
+### Integration Points
+
+1. **Context Cache**: `[CACHE:key]` stores data for session
+2. **State Sync**: `[SYNC:file]` updates state.json
+3. **Quality Gate**: `[CHECK:dimension]` enforces standards
+
+**The test**: Can I express this operation in <50% tokens? If yes, use I-Lang.
+
+---
+
+## 9. Batch Protocol
 
 **After every batch (10 chapters):**
 
@@ -116,7 +204,7 @@
 
 ---
 
-## 9. No False Claims
+## 10. No False Claims
 
 **Never say "completed" without verification.**
 
@@ -128,7 +216,59 @@
 
 ---
 
-## Quick Reference
+## 11. Gemini Deep Audit
+
+**Every chapter must pass Gemini deep audit before commit.**
+
+### Audit Dimensions (5 required)
+
+1. **Worldview Consistency** (世界观一致性)
+   - Ming Dynasty accuracy (no Qing elements)
+   - Technology gap verification (8-20 years behind West)
+   - Currency system (iron coin oxidation, exchange rates)
+
+2. **Physical Logic** (物理逻辑)
+   - Character injury tracking (Chen Tie's left leg scar)
+   - Equipment consistency
+   - Timeline verification
+
+3. **POV Lock** (POV死锁)
+   - Single POV per chapter
+   - No access to other characters' thoughts
+   - Information asymmetry
+
+4. **Deep Logic** (深层逻辑)
+   - Motivation rationality
+   - Economic calculation correctness
+   - Foreshadowing consistency
+
+5. **Style Quality** (文风质量)
+   - AI flavor detection (no "微微", "淡淡", "心头一颤")
+   - Sensory contrast ≥3 per chapter
+   - Prohibited words scan
+
+### Passing Standard
+
+- Worldview ≥ 8/10
+- Physical ≥ 8/10
+- POV ≥ 9/10
+- Logic ≥ 7/10
+- Style ≥ 8/10
+- **Total ≥ 40/50**
+
+### Required Outputs
+
+Every Gemini audit must include:
+1. Structured audit report (5 dimensions)
+2. 【反向拷问】(Counter-questioning, <100 words)
+3. 你可能想知道 (3 follow-up questions)
+4. 【拓展思考】(Extended insights)
+
+**The test**: Can Gemini find issues that 8 agents missed? If no, audit insufficient.
+
+---
+
+## 12. Quick Reference
 
 **Read these files before writing**:
 - `docs/00-宪法层/Daming1900_Bible.md` (World Bible)
