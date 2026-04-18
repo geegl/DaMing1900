@@ -2,7 +2,7 @@
   "project": "大明1900",
   "version": "5.0",
   "total_chapters": 220,
-  "current_chapter": 0,
+  "current_chapter": 1,
 
   "characters": {
     "陈铁": {
@@ -131,7 +131,13 @@
       "基本信息": {
         "年龄": 18,
         "位置": "天津卫铸造厂",
-        "状态": "存活"
+        "状态": "重伤"
+      },
+      "物理状态": {
+        "健康值": 15,
+        "伤痕": ["右臂高压蒸汽烫伤（第1章，整条右臂皮肉脱落）"],
+        "残疾": [],
+        "病症": []
       },
       "存活": true
     },
@@ -151,8 +157,8 @@
   "world_state": {
     "时间": {
       "年份": 1900,
-      "月份": 1,
-      "日期": 1
+      "月份": 10,
+      "日期": 7
     },
     "当前事件": "八国联军集结大沽口外",
     "地点状态": {
@@ -178,8 +184,8 @@
   },
 
   "generation_state": {
-    "last_checkpoint": 0,
-    "chapters_generated": 0,
+    "last_checkpoint": 1,
+    "chapters_generated": 1,
     "errors": []
   }
 }
