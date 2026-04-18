@@ -1,0 +1,84 @@
+
+# I-Lang知识库：番茄小说签约与审核标准
+
+```
+[META]
+version: 2.0
+created: 2026-04-18
+total_docs: 10
+status: complete
+
+[EXTRACT:签约审核标准]
+
+[番茄规则详解]
+title: 在番🍅茄会惩罚每一个不懂规则的人！
+length: 6251字符
+status: ✅ 已提取
+file: knowledge_base/番茄规则详解.md
+
+
+[短篇投稿详解]
+title: 「保姆级」新人短篇是投三方/知乎/番茄详解
+length: 3942字符
+status: ✅ 已提取
+file: knowledge_base/短篇投稿详解.md
+
+
+[新人5个段位]
+title: NinesAI-【基础】-新手的5个段位和进阶详解
+length: 4496字符
+status: ✅ 已提取
+file: knowledge_base/新人5个段位.md
+
+
+[编辑拒稿真相]
+title: Nines写作宝典-【新手必看】编辑到底怎么看AI味？
+length: 1410字符
+status: ✅ 已提取
+file: knowledge_base/编辑拒稿真相.md
+
+
+[知乎番茄差异]
+title: 新人必看-2025「知乎/番茄」流量机制差异点！
+length: 6524字符
+status: ✅ 已提取
+file: knowledge_base/知乎番茄差异.md
+
+
+[短篇开篇引爆]
+title: Nines写作宝典-短篇/短剧开头5s引爆观众附Prompt
+length: 5420字符
+status: ✅ 已提取
+file: knowledge_base/短篇开篇引爆.md
+
+
+[中长篇开篇]
+title: Nines写作宝典-中长开篇怎么样才能爆！附Prompt
+length: 5013字符
+status: ✅ 已提取
+file: knowledge_base/中长篇开篇.md
+
+
+[新人易犯错误]
+title: 80%新人作者易犯的错误（含改进办法和提示词）
+length: 4456字符
+status: ✅ 已提取
+file: knowledge_base/新人易犯错误.md
+
+
+[新手收益经验]
+title: 新手2个月，番茄短篇收益2500+ 干货分享
+length: 3188字符
+status: ✅ 已提取
+file: knowledge_base/新手收益经验.md
+
+
+[网文基础知识]
+title: NinesAI-【基础】-网文和AI提示词知识大全
+length: 7377字符
+status: ✅ 已提取
+file: knowledge_base/网文基础知识.md
+
+
+[END]
+```
