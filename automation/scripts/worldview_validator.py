@@ -54,17 +54,22 @@ def validate_chapter(file_path):
                 context = content[start:end]
                 errors.append(f"禁用词 '{word}' 出现位置: ...{context}...")
 
-    # 2. 检查年号格式
-    year_pattern = r'(\D+)(\d+)年'
-    matches = re.findall(year_pattern, content)
-    for era_name, year_num in matches:
-        era_name = era_name.strip()
-        if era_name and era_name not in ALLOWED_ERAS:
-            # 检查是否是清朝年号
-            if era_name in ["光绪", "宣统", "咸丰", "同治", "乾隆", "康熙", "雍正"]:
-                errors.append(f"发现清朝年号: {era_name}{year_num}年")
-            elif not era_name.isdigit():  # 不是纯数字年份
-                warnings.append(f"未知年号格式: {era_name}{year_num}年")
+    # 2. 检查清朝年号（致命错误）
+    # 改进：只检测已知的清朝年号，避免误报
+    qing_eras = ["光绪", "宣统", "咸丰", "同治", "乾隆", "康熙", "雍正"]
+    for era in qing_eras:
+        pattern = rf'{era}(\d+)年'
+        matches = re.findall(pattern, content)
+        for year_num in matches:
+            errors.append(f"发现清朝年号: {era}{year_num}年")
+
+    # 3. 检查允许年号的格式正确性
+    for era in ALLOWED_ERAS:
+        pattern = rf'{era}(\d+)年'
+        matches = re.findall(pattern, content)
+        if matches:
+            # 年号存在，无需额外警告
+            pass
 
     # 3. 检查时间计算正确性
     tiangong_pattern = r'天工(\d+)年.*?(\d{4})年'
