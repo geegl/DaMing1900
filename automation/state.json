@@ -2,7 +2,7 @@
   "project": "大明1900",
   "version": "5.0",
   "total_chapters": 220,
-  "current_chapter": 60,
+  "current_chapter": 70,
   "characters": {
     "陈铁": {
       "基本信息": {
@@ -191,7 +191,7 @@
   },
   "generation_state": {
     "last_checkpoint": 10,
-    "chapters_generated": 10,
+    "chapters_generated": 20,
     "errors": []
   },
   "chapters_generated": 1
