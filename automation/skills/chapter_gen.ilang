@@ -20,8 +20,8 @@
 ## 完整流程（单章）
 
 # Step 1: 上下文预加载（首次运行时）
-[READ:docs/00-宪法层/Daming1900_Bible.md]=>[CACHE:bible]
-[READ:docs/01-规划层/Daming1900_Master_Outline.md]=>[CACHE:outline]
+[READ:docs/Daming1900_Bible.md]=>[CACHE:bible]
+[READ:docs/Daming1900_Master_Outline.md]=>[CACHE:outline]
 [READ:automation/character_physical_profiles.json]=>[CACHE:profiles]
 [READ:automation/state.json]=>[CACHE:state]
 [READ:AGENTS.md]=>[CACHE:rules]
