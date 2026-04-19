@@ -190,9 +190,12 @@
     "当前张力": "底层生存 + 列强压迫"
   },
   "generation_state": {
-    "last_checkpoint": 10,
-    "chapters_generated": 20,
+    "last_checkpoint": 70,
+    "chapters_generated": 70,
+    "current_batch": 7,
+    "current_phase": "第一部：天工纪（已完成）",
+    "last_updated": "2026-04-19",
     "errors": []
   },
-  "chapters_generated": 1
+  "chapters_generated": 70
 }
