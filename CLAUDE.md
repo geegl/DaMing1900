@@ -202,12 +202,29 @@ Use I-Lang for passing data between 8 agents:
 
 ## 9. Batch Protocol
 
-**After every batch (10 chapters):**
+**After every batch (10 chapters), 必须严格按顺序执行以下步骤：**
 
-1. Update `README.md` (progress)
-2. Update `automation/state.json`
-3. Update `progress/CURRENT.md`
-4. Git commit and push
+### 第一阶段：章节提交
+1. Git提交章节文件
+
+### 第二阶段：文档更新（不可跳过）
+2. **更新automation/state.json**（current_chapter + 10, current_batch + 1）
+3. **更新README.md**（进度 + 批次完成表）
+4. **更新progress/CURRENT.md**（详细进度 + 里程碑）
+5. **创建批次日志**（progress/batches/batch_XX_log.md）
+
+### 第三阶段：完整性检查（不可跳过）
+6. **运行batch_workflow_checker.py**（检查所有文档是否更新）
+7. **确认检查通过**（如果失败，立即补完并重新检查）
+
+### 第四阶段：通知用户
+8. Git提交所有文档更新
+9. 发送Telegram通知（确认所有文档已更新）
+
+**强制规则**：
+- ❌ 禁止跳过任何步骤
+- ❌ 禁止在文档更新前发送Telegram通知
+- ❌ 禁止忽略batch_workflow_checker.py的检查结果
 
 **The test**: Can I resume after context reset? If no, batch incomplete.
 
