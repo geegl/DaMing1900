@@ -1,0 +1,72 @@
+# I-Lang章节生成技能
+# 文件：automation/skills/chapter_gen.ilang
+# 用途：单章生成完整流程
+
+## 核心动词定义
+# READ: 读取文件
+# CACHE: 缓存数据
+# FILT: 过滤数据
+# GEN: 生成内容
+# CHECK: 检查规则
+# VERIFY: 验证结果
+# APPLY: 应用修正
+# SYNC: 同步状态
+# COMMIT: Git提交
+# NOTIFY: 发送通知
+# OUT: 输出结果
+
+---
+
+## 完整流程（单章）
+
+# Step 1: 上下文预加载（首次运行时）
+[READ:docs/00-宪法层/Daming1900_Bible.md]=>[CACHE:bible]
+[READ:docs/01-规划层/Daming1900_Master_Outline.md]=>[CACHE:outline]
+[READ:automation/character_physical_profiles.json]=>[CACHE:profiles]
+[READ:automation/state.json]=>[CACHE:state]
+[READ:AGENTS.md]=>[CACHE:rules]
+
+# Step 2: 章节规划
+[CACHE:outline|ch={chapter}]=>
+[FILT:key=核心场景,POV,时间线]=>
+[GEN:beat_sheet|ch={chapter}]=>
+[CACHE:beat]
+
+# Step 3: 章节写作
+[CACHE:beat]=>
+[CACHE:profiles|char={pov}]=>
+[CACHE:state]=>
+[GEN:chapters/第{chapter}章.md|pov={pov},style=cold_hard]=>
+[CACHE:draft]
+
+# Step 4: Codex审查
+[CACHE:draft]=>
+[CACHE:rules]=>
+[CHECK:automation/prompts/codex_review_template.txt]=>
+[VERIFY:世界观,POV,文风,番茄标准]=>
+[CACHE:review_result]
+
+# Step 5: 应用修正
+[CACHE:review_result]=>
+[APPLY:修正]=>
+[OUT:chapters/第{chapter}章.md]
+
+# Step 6: 世界观验证
+[VERIFY:automation/scripts/worldview_validator.py|file=chapters/第{chapter}章.md]=>
+[OUT:验证结果]
+
+# Step 7: 状态同步
+[SYNC:automation/state.json|ch={chapter}]=>
+[COMMIT:git|msg="完成第{chapter}章"]=>
+[NOTIFY:telegram|msg="第{chapter}章完成"]
+
+---
+
+## 变量说明
+# {chapter}: 章节编号（如004）
+# {pov}: POV角色名（如陈铁、老鬼）
+
+---
+
+## 使用方式
+# python3 automation/scripts/ilang_runner.py --skill chapter_gen.ilang --chapter 004 --pov 老鬼
