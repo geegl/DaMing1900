@@ -26,10 +26,19 @@
 
 **Prohibited (Never Use)**:
 - ❌ Qing officials: Governor-General (总督), Governor (巡抚) as permanent positions
+- ❌ Qing era names: 光绪, 宣统, 咸丰, 同治, 乾隆, 康熙, 雍正
 - ❌ Modern concepts: 手机, 地铁, 公共公园
 - ❌ Manchu elements: 辫子, 旗袍, 奴才/主子
 
 **The test**: Can a Ming history scholar find anachronisms? If yes, rewrite.
+
+**年号计算公式**:
+- 天工X年 = 1890 + X (天工元年 = 1891年)
+- 示例: 天工九年 = 1890 + 9 = 1899年
+
+**自动验证**:
+- 每章生成后运行: `python3 automation/scripts/worldview_validator.py chapters/第XXX章.md`
+- 文档: `automation/worldview_validator.md`
 
 ---
 
