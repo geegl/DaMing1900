@@ -19,6 +19,30 @@
 
 **Minimum historical accuracy. No Qing/Modern elements.**
 
+**一致性质控体系（7个维度）**：
+
+1. **时间线一致性** - timeline_validator_v2.py
+2. **世界观一致性** - worldview_validator.py
+3. **人物一致性** - character_consistency_validator.py
+4. **剧情逻辑一致性** - Codex审查
+5. **设定一致性** - setting_validator.py
+6. **文风一致性** - quality_checker.py
+7. **POV一致性** - quality_checker.py
+
+**一键验证**：
+```bash
+python3 automation/scripts/consistency_validator.py <章节号>
+```
+
+**强制规则**：
+- ❌ 禁止时间线错误（倒流、跳跃、穿越）
+- ❌ 禁止世界观错误（清朝元素、现代元素）
+- ❌ 禁止人物特征突变（伤痕消失、能力消失）
+- ❌ 禁止剧情逻辑矛盾（前后矛盾、因果断裂）
+- ❌ 禁止设定矛盾（货币、技术、官制）
+- ❌ 禁止AI痕迹词汇
+- ❌ 禁止POV越界
+
 **Required (Must Have)**:
 - Three Provincial Offices (三司制): Buzhengshi (民政), Anchashi (司法), Duzhihuishi (军事)
 - Emperor's reign title format: Tiangong 19th Year (天工十九年)
