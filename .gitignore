@@ -8,3 +8,6 @@ Thumbs.db
 .vscode/
 
 *.log
+context/generated/chapter_*/
+/tmp/
+reviews/*.md
