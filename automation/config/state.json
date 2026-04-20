@@ -2,7 +2,7 @@
   "project": "大明1900",
   "version": "6.0",
   "total_chapters": 220,
-  "current_chapter": 80,
+  "current_chapter": 90,
   "rewrite_status": {
     "phase": "重写第1-10章完成",
     "start_date": "2026-04-19",
@@ -227,7 +227,7 @@
   "generation_state": {
     "last_checkpoint": 0,
     "chapters_generated": 0,
-    "current_batch": 8,
+    "current_batch": 9,
     "rewrite_batch": 1,
     "rewrite_range": "1-10",
     "current_phase": "开始重写第1章",
