@@ -1,23 +1,32 @@
 {
-  "current_year": 1900,
-  "current_month": 10,
-  "current_chapter": 0,
+  "project": "大明1900",
+  "timeline_version": "6.0",
+  "last_chapter": 0,
+  "last_time": "1900年十月",
   "timeline_log": [],
-  "trilogy_timeline": {
-    "第一部": {
+  "timeline_ranges": {
+    "第一部_天工纪": {
       "chapters": "1-70",
       "years": "1900-1909",
-      "emperor": "天工帝"
+      "start": "1900年十月",
+      "end": "1909年十二月"
     },
-    "第二部": {
+    "第二部_洪威纪": {
       "chapters": "71-165",
-      "years": "1909-1920",
-      "emperor": "洪威帝"
+      "years": "1910-1920",
+      "start": "1910年一月",
+      "end": "1920年十二月"
     },
-    "第三部": {
+    "第三部_泰安纪": {
       "chapters": "166-220",
-      "years": "1919-1921",
-      "emperor": "泰安帝"
+      "years": "1920-1921",
+      "start": "1920年一月",
+      "end": "1921年十二月"
     }
+  },
+  "constraints": {
+    "max_gap_days": 180,
+    "min_gap_days": 1,
+    "warning_gap_days": 90
   }
 }
