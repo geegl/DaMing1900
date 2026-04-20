@@ -15,7 +15,7 @@ class CharacterConsistencyValidator:
 
     def __init__(self, project_root):
         self.project_root = Path(project_root)
-        self.state_file = self.project_root / "automation" / "state.json"
+        self.state_file = Path(project_root) / "automation" / "config" / "state.json"
         self.profiles_file = self.project_root / "automation" / "character_physical_profiles.json"
 
         # 加载状态

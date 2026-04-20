@@ -16,7 +16,7 @@ class TimelineValidator:
 
     def __init__(self, project_root):
         self.project_root = Path(project_root)
-        self.timeline_file = self.project_root / "automation" / "timeline.json"
+        self.timeline_file = Path(project_root) / "automation" / "config" / "timeline.json"
 
         # 加载时间线配置
         with open(self.timeline_file, 'r', encoding='utf-8') as f:
