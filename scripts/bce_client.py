@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 import argparse
+import http.client
 import json
 import os
 import sqlite3
 import ssl
+import time
 import sys
+import urllib.error
 import urllib.request
 from pathlib import Path
 
@@ -18,20 +21,21 @@ def load_current_provider_id() -> str:
     return provider_id
 
 
-def load_provider_env(provider_id: str) -> dict:
+def load_provider_env(provider_id: str) -> tuple[str, dict]:
     db_path = Path.home() / ".cc-switch" / "cc-switch.db"
     conn = sqlite3.connect(str(db_path))
     row = conn.execute(
-        "select settings_config from providers where id=? and app_type='claude'",
+        "select name, settings_config from providers where id=? and app_type='claude'",
         (provider_id,),
     ).fetchone()
     if not row:
         raise RuntimeError(f"未找到 Claude provider: {provider_id}")
-    conf = json.loads(row[0])
+    provider_name = row[0]
+    conf = json.loads(row[1])
     env = conf.get("env", {})
     if "ANTHROPIC_AUTH_TOKEN" not in env or "ANTHROPIC_BASE_URL" not in env:
         raise RuntimeError("当前 provider 缺少 BCE 所需环境变量")
-    return env
+    return provider_name, env
 
 
 def request_text(base_url: str, token: str, model: str, prompt: str, max_tokens: int) -> str:
@@ -50,8 +54,19 @@ def request_text(base_url: str, token: str, model: str, prompt: str, max_tokens:
         },
         method="POST",
     )
-    with urllib.request.urlopen(req, context=ssl.create_default_context(), timeout=240) as resp:
-        data = json.loads(resp.read().decode("utf-8", "ignore"))
+    last_error = None
+    for attempt in range(4):
+        try:
+            with urllib.request.urlopen(req, context=ssl.create_default_context(), timeout=240) as resp:
+                data = json.loads(resp.read().decode("utf-8", "ignore"))
+            break
+        except (http.client.RemoteDisconnected, TimeoutError, urllib.error.URLError) as exc:
+            last_error = exc
+            if attempt == 3:
+                raise
+            time.sleep(2 * (attempt + 1))
+    else:
+        raise last_error
     parts = []
     for item in data.get("content", []):
         if item.get("type") == "text":
@@ -70,7 +85,20 @@ def main() -> int:
 
     prompt = Path(args.prompt_file).read_text()
     provider_id = args.provider_id or load_current_provider_id()
-    env = load_provider_env(provider_id)
+    provider_name, env = load_provider_env(provider_id)
+    if os.environ.get("BCE_DEBUG_PROVIDER") == "1":
+        print(
+            json.dumps(
+                {
+                    "provider_id": provider_id,
+                    "provider_name": provider_name,
+                    "base_url": env["ANTHROPIC_BASE_URL"],
+                    "model": args.model,
+                },
+                ensure_ascii=False,
+            ),
+            file=sys.stderr,
+        )
     text = request_text(
         env["ANTHROPIC_BASE_URL"],
         env["ANTHROPIC_AUTH_TOKEN"],
