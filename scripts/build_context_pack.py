@@ -38,10 +38,11 @@ def extract_section(text: str, start_marker: str, end_marker: Optional[str] = No
 def extract_character_rules(names: list[str]) -> str:
     bible_text = BIBLE.read_text()
     style_text = STYLE.read_text()
+    appendix = extract_section(bible_text, "## 十六、角色提取索引", None)
     blocks = []
     for name in names:
         bible_match = re.search(
-            rf"(?ms)^### {re.escape(name)}.*?(?=^### |\Z)", bible_text
+            rf"(?ms)^### {re.escape(name)}.*?(?=^### |\Z)", appendix or bible_text
         )
         style_match = re.search(
             rf"(?ms)^\*\*{re.escape(name)}对话风格\*\*：.*?(?=^\*\*.*?对话风格\*\*：|^---|\Z)",
@@ -55,10 +56,8 @@ def extract_character_rules(names: list[str]) -> str:
 
 
 def build_forbidden_rules() -> str:
-    bible_text = BIBLE.read_text()
     style_text = STYLE.read_text()
     parts = [
-        extract_section(bible_text, "## 五、禁止出现的内容", None),
         extract_section(style_text, "## 五、禁用词表", "## 六、场景描写规范"),
         extract_section(style_text, "## 六、场景描写规范", "## 七、章节内一致性检查清单"),
     ]
@@ -94,7 +93,7 @@ def main() -> int:
     parser.add_argument("chapter", type=int, help="章节号，例如 3")
     parser.add_argument(
         "--characters",
-        default="谢长庚,朱载机,郑玄机,刘恩",
+        default="谢长庚,朱载机,朱载昱,郑玄机,刘恩,沈青鸾,陆知微",
         help="逗号分隔的人物名",
     )
     args = parser.parse_args()

@@ -6,6 +6,7 @@
 
 - `Codex` 负责规划、上下文压缩、二次校对、日志回填与流程编排
 - `BCE` 负责正文主写、一致性校对与最终质检
+- `append_outline_log.py` 负责把章节日志自动写回 `OUTLINE.md`
 - Telegram 只在全部质量 gate 通过后发送完成通知
 
 ## 仓库结构
@@ -93,11 +94,24 @@
 ./scripts/run_codex_review.sh chapters/chapter_003_draft.md
 ```
 
+### 自动回填章节日志
+
+```bash
+python3 ./scripts/append_outline_log.py \
+  --chapter 3 \
+  --chapter-file chapters/chapter_003.md \
+  --summary "100字摘要" \
+  --state "人物当前位置 | 情绪 | 持有物变化" \
+  --foreshadow "新增伏笔说明" \
+  --scores "BCE一致性4/5 | Codex二审4/5 | 终检4.5/5" \
+  --models "规划 Codex | 写作 BCE glm-5 | 一致性校对 BCE ernie-4.5-turbo-20260402 | 二次校对 Codex | 终检 BCE glm-5"
+```
+
 ### BCE 终检
 
 ```bash
-./scripts/run_bce_final_check.sh chapters/chapter_003_draft.md
-./scripts/run_bce_final_check.sh chapters/chapter_003_draft.md glm-5
+./scripts/run_bce_final_check.sh chapters/chapter_003.md
+./scripts/run_bce_final_check.sh chapters/chapter_003.md glm-5
 ```
 
 ### Telegram 通知测试

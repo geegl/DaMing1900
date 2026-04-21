@@ -38,6 +38,12 @@ else
   bad "send_telegram.sh 不可执行"
 fi
 
+if [ -x "$ROOT_DIR/scripts/append_outline_log.py" ]; then
+  ok "append_outline_log.py 可执行"
+else
+  bad "append_outline_log.py 不可执行"
+fi
+
 if [ -f "$HOME/.cc-switch/settings.json" ] && [ -f "$HOME/.cc-switch/cc-switch.db" ]; then
   ok "CC Switch 配置存在"
 else
