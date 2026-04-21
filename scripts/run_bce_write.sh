@@ -32,7 +32,7 @@ OUTPUT_FILE="${3:-$ROOT_DIR/chapters/chapter_${CHAPTER_NUM}_draft.md}"
 
 python3 "$ROOT_DIR/scripts/build_context_pack.py" "$CHAPTER_NUM_RAW" >/dev/null
 
-PACK_FILE="$ROOT_DIR/context/generated/chapter_${CHAPTER_NUM}/pack.md"
+PACK_FILE="$ROOT_DIR/context/generated/chapter_${CHAPTER_NUM}/write_pack.md"
 PROMPT_FILE="$(mktemp)"
 trap 'rm -f "$PROMPT_FILE"' EXIT
 

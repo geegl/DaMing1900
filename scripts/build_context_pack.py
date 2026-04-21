@@ -55,6 +55,16 @@ def extract_character_rules(names: list[str]) -> str:
     return "\n\n".join(blocks).strip()
 
 
+def select_compact_character_names(chapter_brief: str, names: list[str]) -> list[str]:
+    selected = ["谢长庚"]
+    for name in names:
+        if name == "谢长庚":
+            continue
+        if name in chapter_brief:
+            selected.append(name)
+    return selected
+
+
 def build_forbidden_rules() -> str:
     style_text = STYLE.read_text()
     parts = [
@@ -75,12 +85,69 @@ def build_current_state() -> str:
     return "# 最近日志与临近状态\n\n" + recent.strip()
 
 
+def build_current_state_compact() -> str:
+    text = OUTLINE.read_text()
+    match = re.search(r"(?ms)<!-- LOG_START -->(.*?)<!-- LOG_END -->", text)
+    if not match:
+        return "# 最近日志与临近状态（精简）\n\n未找到 LOG 区。"
+    block = match.group(1).strip()
+    entries = [part.strip() for part in re.split(r"\n(?=\*\*第\d+章)", block) if part.strip()]
+    recent = entries[-2:] if entries else []
+    compact_entries = []
+    for entry in recent:
+        lines = [line.rstrip() for line in entry.splitlines() if line.strip()]
+        compact_entries.append("\n".join(lines[:2]))
+    compact = "\n\n".join(compact_entries) if compact_entries else "LOG 区为空。"
+    return "# 最近日志与临近状态（精简）\n\n" + compact.strip()
+
+
 def previous_excerpt(chapter_num: int) -> str:
     prev = ROOT / "chapters" / f"chapter_{chapter_num - 1:03d}.md"
     if not prev.exists():
         return "无上一章正文文件。"
     text = prev.read_text()
     return text[-1200:].strip()
+
+
+def previous_excerpt_compact(chapter_num: int) -> str:
+    excerpt = previous_excerpt(chapter_num)
+    return excerpt[-700:].strip()
+
+
+def build_voice_rules_compact(full_text: str) -> str:
+    text = full_text.strip()
+    if len(text) <= 1100:
+        return "# 人物音色规则（精简）\n\n" + text
+    lines = [line for line in text.splitlines() if line.strip()]
+    compact_lines = []
+    bullet_count = 0
+    for line in lines:
+        if line.startswith("### ") or "对话风格" in line:
+            compact_lines.append(line)
+            bullet_count = 0
+            continue
+        if line.startswith("- ") and bullet_count < 2:
+            compact_lines.append(line)
+            bullet_count += 1
+            continue
+    compact = "\n".join(compact_lines).strip()
+    return "# 人物音色规则（精简）\n\n" + compact[:1100].strip()
+
+
+def build_forbidden_rules_compact(full_text: str) -> str:
+    lines = [line.rstrip() for line in full_text.splitlines() if line.strip()]
+    keep = []
+    quote_count = 0
+    for line in lines:
+        if line.startswith("## ") or line.startswith("### "):
+            keep.append(line)
+            continue
+        if line.startswith("```"):
+            continue
+        if quote_count < 8:
+            keep.append(line)
+            quote_count += 1
+    return "# 禁用规则与场景约束（精简）\n\n" + "\n".join(keep).strip()
 
 
 def write(path: Path, content: str) -> None:
@@ -107,6 +174,20 @@ def main() -> int:
     voice_rules = "# 人物音色规则\n\n" + extract_character_rules(names)
     forbidden_rules = "# 禁用规则与场景约束\n\n" + build_forbidden_rules()
     prev_excerpt = "# 上一章结尾摘录\n\n" + previous_excerpt(chapter_num)
+    current_state_compact = build_current_state_compact()
+    compact_names = select_compact_character_names(chapter_brief, names)
+    voice_rules_compact = build_voice_rules_compact(extract_character_rules(compact_names))
+    forbidden_rules_compact = build_forbidden_rules_compact(build_forbidden_rules())
+    prev_excerpt_compact = "# 上一章结尾短摘录\n\n" + previous_excerpt_compact(chapter_num)
+    write_pack = "\n\n".join(
+        [
+            chapter_brief,
+            current_state_compact,
+            voice_rules_compact,
+            forbidden_rules_compact,
+            prev_excerpt_compact,
+        ]
+    )
 
     pack = "\n\n".join(
         [
@@ -122,7 +203,9 @@ def main() -> int:
     write(chapter_dir / "current_state.md", current_state)
     write(chapter_dir / "voice_rules.md", voice_rules)
     write(chapter_dir / "forbidden_rules.md", forbidden_rules)
+    write(chapter_dir / "previous_excerpt.md", prev_excerpt)
     write(chapter_dir / "pack.md", pack)
+    write(chapter_dir / "write_pack.md", write_pack)
     print(chapter_dir)
     return 0
 
