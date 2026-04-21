@@ -10,8 +10,8 @@ usage() {
   ./scripts/run_codex_review.sh <draft_file> [output_file]
 
 示例:
-  ./scripts/run_codex_review.sh chapters/chapter_003_draft.md
-  ./scripts/run_codex_review.sh chapters/chapter_003_draft.md reviews/review_codex_003.md
+  ./scripts/run_codex_review.sh draft/chapter_003_draft.md
+  ./scripts/run_codex_review.sh draft/chapter_003_draft.md reviews/review_codex_003.md
 EOF
 }
 

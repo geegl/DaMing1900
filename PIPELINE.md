@@ -132,7 +132,7 @@
 
 **输出**：
 
-- `chapters/chapter_XXX_draft.md`
+- `draft/chapter_XXX_draft.md`
 
 **硬约束**：
 
@@ -155,7 +155,7 @@
 **执行命令**：
 
 ```bash
-./scripts/run_bce_consistency_review.sh chapters/chapter_003_draft.md
+./scripts/run_bce_consistency_review.sh draft/chapter_003_draft.md
 ```
 
 **目标**：作为第一层硬约束 gate，检查世界观、人物音色、禁词和钩子强度。
@@ -181,7 +181,7 @@
 **执行命令**：
 
 ```bash
-./scripts/run_codex_review.sh chapters/chapter_003_draft.md
+./scripts/run_codex_review.sh draft/chapter_003_draft.md
 ```
 
 **目标**：负责节奏、句式单调、人物音色漂移、AI 痕迹、场景真实感。

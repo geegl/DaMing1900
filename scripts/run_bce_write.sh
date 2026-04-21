@@ -13,7 +13,7 @@ usage() {
 示例:
   ./scripts/run_bce_write.sh 3
   ./scripts/run_bce_write.sh 3 glm-5
-  ./scripts/run_bce_write.sh 3 glm-5 chapters/chapter_003_draft.md
+  ./scripts/run_bce_write.sh 3 glm-5 draft/chapter_003_draft.md
 EOF
 }
 
@@ -28,7 +28,7 @@ if [ $# -lt 1 ] || [ $# -gt 3 ]; then
 fi
 
 CHAPTER_NUM="$(printf '%03d' "$CHAPTER_NUM_RAW")"
-OUTPUT_FILE="${3:-$ROOT_DIR/chapters/chapter_${CHAPTER_NUM}_draft.md}"
+OUTPUT_FILE="${3:-$ROOT_DIR/draft/chapter_${CHAPTER_NUM}_draft.md}"
 
 python3 "$ROOT_DIR/scripts/build_context_pack.py" "$CHAPTER_NUM_RAW" >/dev/null
 

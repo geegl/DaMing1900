@@ -85,13 +85,13 @@
 ### BCE 一致性校对
 
 ```bash
-./scripts/run_bce_consistency_review.sh chapters/chapter_003_draft.md
+./scripts/run_bce_consistency_review.sh draft/chapter_003_draft.md
 ```
 
 ### Codex 二次校对
 
 ```bash
-./scripts/run_codex_review.sh chapters/chapter_003_draft.md
+./scripts/run_codex_review.sh draft/chapter_003_draft.md
 ```
 
 ### 自动回填章节日志
