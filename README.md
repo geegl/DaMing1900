@@ -47,6 +47,8 @@
 
 - `design/`
   结构化规划层；保存章节类型等执行元数据，不再把这类控制信息散落在不同 outline 段落里
+  - `design/chapter_types.json`：`41-100` 的结构化章型真源
+  - `design/chapter_policy.md`：前 100 章章型判定标准
 
 - `PIPELINE.md`
   正式 7 步写作 SOP，含分流策略、失败回滚和开工前检查

@@ -59,6 +59,7 @@
 
 - `OUTLINE.md`：剧情与节拍的长文本真源
 - `design/chapter_types.json`：`41-100` 章的结构化 `chapter_type` 真源
+- `design/chapter_policy.md`：前 100 章的 `chapter_type` 判定标准
 
 强规则：
 

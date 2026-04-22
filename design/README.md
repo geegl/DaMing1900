@@ -8,6 +8,9 @@
 - `chapter_types.json`
   `41-100` 章的结构化章节类型真源。后续 `build_context_pack.py` 会从这里读取 `chapter_type`，不再依赖人工临场判断。
 
+- `chapter_policy.md`
+  前 100 章的章节类型判定规则。用于约束什么情况必须标成 `key`，避免章型漂移。
+
 ## 设计原则
 
 1. `OUTLINE.md` 负责讲故事、讲节奏、讲长线推进。
@@ -27,4 +30,3 @@
   - `normal`
   - `key`
 - `key` 章用于重大节点、重大揭示、重大关系变化或幕结构拐点
-
