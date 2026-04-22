@@ -18,9 +18,14 @@
 ├── FANQIE_STANDARDS.md
 ├── OUTLINE.md
 ├── PIPELINE.md
+├── design/
 ├── send_telegram.sh
 ├── chapters/
+├── draft/
 ├── reviews/
+│   ├── consistency/
+│   ├── codex/
+│   └── final/
 ├── context/
 │   └── generated/
 └── scripts/
@@ -39,6 +44,9 @@
 
 - `OUTLINE.md`
   三幕结构、章节细纲、长期伏笔和章节日志
+
+- `design/`
+  结构化规划层；保存章节类型等执行元数据，不再把这类控制信息散落在不同 outline 段落里
 
 - `PIPELINE.md`
   正式 7 步写作 SOP，含分流策略、失败回滚和开工前检查
@@ -82,6 +90,12 @@
 ./scripts/run_bce_write.sh 3 glm-5
 ```
 
+默认行为：
+
+- `41-100` 若未手动指定模型，脚本会自动读取 `design/chapter_types.json`
+- `normal` 章默认使用 `deepseek-v3.2`
+- `key` 章默认使用 `glm-5`
+
 写作成功后，必须同时生成：
 
 - `draft/chapter_003_draft.md`
@@ -95,11 +109,19 @@
 ./scripts/run_bce_consistency_review.sh draft/chapter_003_draft.md
 ```
 
+输出目录：
+
+- `reviews/consistency/`
+
 ### Codex 二次校对
 
 ```bash
 ./scripts/run_codex_review.sh draft/chapter_003_draft.md
 ```
+
+输出目录：
+
+- `reviews/codex/`
 
 ### 自动回填章节日志
 
@@ -121,6 +143,10 @@ python3 ./scripts/append_outline_log.py \
 ./scripts/run_bce_final_check.sh chapters/chapter_003.md glm-5
 ```
 
+输出目录：
+
+- `reviews/final/`
+
 ### Telegram 通知测试
 
 ```bash
@@ -134,6 +160,7 @@ python3 ./scripts/append_outline_log.py \
 - 普通章默认走 `DeepSeek 写作 + ERNIE 审核 + Codex 二审`
 - 关键章默认走 `GLM-5 写作 + ERNIE/Codex 双审 + GLM-5 终检`
 - 所有进入后期长线章节的输入，都优先使用 `context/generated/` 下的压缩上下文，而不是全量喂整仓库
+- `41-100` 的 `chapter_type` 以 `design/chapter_types.json` 为唯一真源
 - 明确禁止人工替代 BCE 正文写作
 - BCE 写作失败时，本章直接停止，不得继续做日志、Telegram 或 GitHub 放行
 - `validate_chapter_gate.py` 未通过时，任何 review、日志、通知都不得继续

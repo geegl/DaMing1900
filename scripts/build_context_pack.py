@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import argparse
+import json
 import re
 from pathlib import Path
 from typing import Optional
@@ -9,6 +10,7 @@ ROOT = Path(__file__).resolve().parent.parent
 OUTLINE = ROOT / "OUTLINE.md"
 BIBLE = ROOT / "BIBLE.md"
 STYLE = ROOT / "STYLE.md"
+CHAPTER_TYPES = ROOT / "design" / "chapter_types.json"
 
 
 def extract_outline_block(chapter_num: int) -> str:
@@ -20,6 +22,23 @@ def extract_outline_block(chapter_num: int) -> str:
     if not match:
         raise SystemExit(f"未在 OUTLINE.md 中找到第 {chapter_num} 章")
     return match.group(0).strip()
+
+
+def load_chapter_types() -> dict:
+    if not CHAPTER_TYPES.exists():
+        return {}
+    return json.loads(CHAPTER_TYPES.read_text())
+
+
+def resolve_chapter_type(chapter_num: int) -> str:
+    mapping = load_chapter_types()
+    key = f"{chapter_num:03d}"
+    entry = mapping.get(key)
+    if entry:
+        return entry.get("chapter_type", "unknown")
+    if 41 <= chapter_num <= 100:
+        raise SystemExit(f"design/chapter_types.json 中缺少第 {chapter_num} 章的 chapter_type")
+    return "unclassified"
 
 
 def extract_section(text: str, start_marker: str, end_marker: Optional[str] = None) -> str:
@@ -168,7 +187,13 @@ def main() -> int:
     chapter_num = args.chapter
     chapter_dir = ROOT / "context" / "generated" / f"chapter_{chapter_num:03d}"
     names = [name.strip() for name in args.characters.split(",") if name.strip()]
+    chapter_type = resolve_chapter_type(chapter_num)
 
+    chapter_type_block = (
+        "# 章节执行类型\n\n"
+        f"- chapter_type: {chapter_type}\n"
+        f"- chapter_number: {chapter_num:03d}"
+    )
     chapter_brief = "# 章节目标\n\n" + extract_outline_block(chapter_num)
     current_state = build_current_state()
     voice_rules = "# 人物音色规则\n\n" + extract_character_rules(names)
@@ -181,6 +206,7 @@ def main() -> int:
     prev_excerpt_compact = "# 上一章结尾短摘录\n\n" + previous_excerpt_compact(chapter_num)
     write_pack = "\n\n".join(
         [
+            chapter_type_block,
             chapter_brief,
             current_state_compact,
             voice_rules_compact,
@@ -191,6 +217,7 @@ def main() -> int:
 
     pack = "\n\n".join(
         [
+            chapter_type_block,
             chapter_brief,
             current_state,
             voice_rules,
@@ -199,6 +226,7 @@ def main() -> int:
         ]
     )
 
+    write(chapter_dir / "chapter_type.md", chapter_type_block)
     write(chapter_dir / "chapter_brief.md", chapter_brief)
     write(chapter_dir / "current_state.md", current_state)
     write(chapter_dir / "voice_rules.md", voice_rules)

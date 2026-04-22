@@ -42,6 +42,7 @@
 ### 默认产物
 
 - `context/generated/chapter_003/chapter_brief.md`
+- `context/generated/chapter_003/chapter_type.md`
 - `context/generated/chapter_003/current_state.md`
 - `context/generated/chapter_003/voice_rules.md`
 - `context/generated/chapter_003/forbidden_rules.md`
@@ -50,8 +51,20 @@
 ### 用法
 
 - `Step 2` 优先读取 `pack.md`
+- `Step 2` 同时必须读取 `chapter_type.md`，不得再靠临时判断普通章 / 关键章
 - `Step 3` / `Step 6` 优先读取 `voice_rules.md`、`forbidden_rules.md` 和章节正文
 - 只有在压缩包不足以支撑判断时，才回退读取 `BIBLE.md` / `STYLE.md` 全文
+
+### 结构化规划真源
+
+- `OUTLINE.md`：剧情与节拍的长文本真源
+- `design/chapter_types.json`：`41-100` 章的结构化 `chapter_type` 真源
+
+强规则：
+
+1. `41-100` 每章必须先有 `chapter_type`
+2. `chapter_type` 缺失时，`build_context_pack.py` 直接失败
+3. 章节类型不再允许人工口头判定
 
 ## 三、开工前准备
 
@@ -125,6 +138,12 @@
 ./scripts/run_bce_write.sh 3 glm-5
 ```
 
+**自动分流规则**：
+
+- 若未手动指定模型，`run_bce_write.sh` 会自动读取 `design/chapter_types.json`
+- `normal` 章默认落到 `deepseek-v3.2`
+- `key` 章默认落到 `glm-5`
+
 **输入**：
 
 - `context/generated/chapter_XXX/pack.md`
@@ -166,7 +185,7 @@
 
 **输出**：
 
-- `reviews/review_bce_consistency_XXX.md`
+- `reviews/consistency/review_bce_consistency_XXX.md`
 
 **通过标准**：
 
@@ -193,7 +212,7 @@
 
 **输出**：
 
-- `reviews/review_codex_XXX.md`
+- `reviews/codex/review_codex_XXX.md`
 
 **通过标准**：
 
@@ -256,7 +275,7 @@ python3 ./scripts/append_outline_log.py \
 
 **输出**：
 
-- `reviews/review_bce_final_XXX.md`
+- `reviews/final/review_bce_final_XXX.md`
 
 **通过标准**：
 

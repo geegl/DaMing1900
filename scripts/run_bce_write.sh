@@ -2,7 +2,6 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-MODEL="${2:-deepseek-v3.2}"
 CHAPTER_NUM_RAW="${1:-}"
 
 usage() {
@@ -28,6 +27,33 @@ if [ $# -lt 1 ] || [ $# -gt 3 ]; then
 fi
 
 CHAPTER_NUM="$(printf '%03d' "$CHAPTER_NUM_RAW")"
+if [ $# -ge 2 ]; then
+  MODEL="$2"
+else
+  MODEL="$(python3 - "$ROOT_DIR" "$CHAPTER_NUM" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+root = Path(sys.argv[1])
+chapter_num = sys.argv[2]
+path = root / "design" / "chapter_types.json"
+default_model = "deepseek-v3.2"
+if not path.exists():
+    print(default_model)
+    raise SystemExit(0)
+
+mapping = json.loads(path.read_text())
+entry = mapping.get(chapter_num)
+if not entry:
+    print(default_model)
+    raise SystemExit(0)
+
+chapter_type = entry.get("chapter_type", "normal")
+print("glm-5" if chapter_type == "key" else default_model)
+PY
+)"
+fi
 OUTPUT_FILE="${3:-$ROOT_DIR/draft/chapter_${CHAPTER_NUM}_draft.md}"
 META_FILE="$ROOT_DIR/context/generated/chapter_${CHAPTER_NUM}/bce_write_meta.json"
 

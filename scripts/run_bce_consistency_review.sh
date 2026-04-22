@@ -3,7 +3,7 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 MODEL="${2:-ernie-4.5-turbo-20260402}"
-REVIEWS_DIR="$ROOT_DIR/reviews"
+REVIEWS_DIR="$ROOT_DIR/reviews/consistency"
 
 usage() {
   cat <<'EOF'
