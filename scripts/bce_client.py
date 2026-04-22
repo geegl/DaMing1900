@@ -11,6 +11,8 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 
+import requests
+
 
 def load_current_provider_id() -> str:
     settings_path = Path.home() / ".cc-switch" / "settings.json"
@@ -44,8 +46,9 @@ def request_text(base_url: str, token: str, model: str, prompt: str, max_tokens:
         "max_tokens": max_tokens,
         "messages": [{"role": "user", "content": prompt}],
     }
+    url = base_url.rstrip("/") + "/v1/messages?beta=true"
     req = urllib.request.Request(
-        base_url.rstrip("/") + "/v1/messages?beta=true",
+        url,
         data=json.dumps(body, ensure_ascii=False).encode("utf-8"),
         headers={
             "content-type": "application/json",
@@ -55,18 +58,43 @@ def request_text(base_url: str, token: str, model: str, prompt: str, max_tokens:
         method="POST",
     )
     last_error = None
-    for attempt in range(4):
+    for attempt in range(6):
         try:
             with urllib.request.urlopen(req, context=ssl.create_default_context(), timeout=240) as resp:
                 data = json.loads(resp.read().decode("utf-8", "ignore"))
             break
-        except (http.client.RemoteDisconnected, TimeoutError, urllib.error.URLError) as exc:
+        except (
+            http.client.RemoteDisconnected,
+            TimeoutError,
+            urllib.error.URLError,
+            ssl.SSLError,
+        ) as exc:
             last_error = exc
-            if attempt == 3:
-                raise
-            time.sleep(2 * (attempt + 1))
+            if attempt == 5:
+                data = None
+                break
+            time.sleep(min(12, 2 * (attempt + 1)))
     else:
         raise last_error
+
+    if data is None:
+        headers = {
+            "content-type": "application/json",
+            "x-api-key": token,
+            "anthropic-version": "2023-06-01",
+        }
+        for attempt in range(3):
+            try:
+                resp = requests.post(url, headers=headers, json=body, timeout=240)
+                resp.raise_for_status()
+                data = resp.json()
+                break
+            except requests.RequestException as exc:
+                last_error = exc
+                if attempt == 2:
+                    raise
+                time.sleep(min(12, 3 * (attempt + 1)))
+
     parts = []
     for item in data.get("content", []):
         if item.get("type") == "text":
