@@ -7,6 +7,7 @@ import sqlite3
 import ssl
 import time
 import sys
+from datetime import datetime
 import urllib.error
 import urllib.request
 from pathlib import Path
@@ -107,13 +108,19 @@ def main() -> int:
     parser.add_argument("--model", required=True, help="BCE 模型名")
     parser.add_argument("--prompt-file", required=True, help="提示词文件")
     parser.add_argument("--output-file", required=True, help="输出文件")
+    parser.add_argument("--output-meta-file", help="输出元数据文件")
     parser.add_argument("--max-tokens", type=int, default=12000, help="max_tokens")
     parser.add_argument("--provider-id", help="可选，显式指定 Claude provider")
+    parser.add_argument("--require-provider-name", default="BCE", help="要求的 provider 名称")
     args = parser.parse_args()
 
     prompt = Path(args.prompt_file).read_text()
     provider_id = args.provider_id or load_current_provider_id()
     provider_name, env = load_provider_env(provider_id)
+    if args.require_provider_name and provider_name != args.require_provider_name:
+        raise RuntimeError(
+            f"当前 provider 不是 {args.require_provider_name}，而是 {provider_name}；禁止继续写作"
+        )
     if os.environ.get("BCE_DEBUG_PROVIDER") == "1":
         print(
             json.dumps(
@@ -137,6 +144,25 @@ def main() -> int:
     output_path = Path(args.output_file)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(text)
+    if args.output_meta_file:
+        meta_path = Path(args.output_meta_file)
+        meta_path.parent.mkdir(parents=True, exist_ok=True)
+        meta_path.write_text(
+            json.dumps(
+                {
+                    "provider_id": provider_id,
+                    "provider_name": provider_name,
+                    "base_url": env["ANTHROPIC_BASE_URL"],
+                    "model": args.model,
+                    "prompt_file": str(Path(args.prompt_file).resolve()),
+                    "output_file": str(output_path.resolve()),
+                    "output_chars": len(text),
+                    "generated_at": datetime.now().isoformat(),
+                },
+                ensure_ascii=False,
+                indent=2,
+            )
+        )
     print(output_path)
     return 0
 

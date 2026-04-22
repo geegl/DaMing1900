@@ -60,6 +60,12 @@ else
   bad "BCE API smoke test 失败"
 fi
 
+if [ -f "$ROOT_DIR/scripts/validate_chapter_gate.py" ]; then
+  ok "validate_chapter_gate.py 已存在"
+else
+  bad "validate_chapter_gate.py 缺失"
+fi
+
 if [ -d "$HOME/.agents/skills/superpowers" ]; then
   ok "superpowers 已安装"
 else

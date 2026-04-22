@@ -82,6 +82,13 @@
 ./scripts/run_bce_write.sh 3 glm-5
 ```
 
+写作成功后，必须同时生成：
+
+- `draft/chapter_003_draft.md`
+- `context/generated/chapter_003/bce_write_meta.json`
+
+若 `provider_name` 不是 `BCE`，或正文不在 `3500-4500` 字范围内，脚本会直接失败。
+
 ### BCE 一致性校对
 
 ```bash
@@ -127,6 +134,9 @@ python3 ./scripts/append_outline_log.py \
 - 普通章默认走 `DeepSeek 写作 + ERNIE 审核 + Codex 二审`
 - 关键章默认走 `GLM-5 写作 + ERNIE/Codex 双审 + GLM-5 终检`
 - 所有进入后期长线章节的输入，都优先使用 `context/generated/` 下的压缩上下文，而不是全量喂整仓库
+- 明确禁止人工替代 BCE 正文写作
+- BCE 写作失败时，本章直接停止，不得继续做日志、Telegram 或 GitHub 放行
+- `validate_chapter_gate.py` 未通过时，任何 review、日志、通知都不得继续
 
 ## Git 同步前建议
 

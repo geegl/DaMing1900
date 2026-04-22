@@ -141,6 +141,10 @@
 - 对话符合人物音色
 - 结尾必须有强钩子
 - 不得出现禁词、满清词、时代错位
+- provider 必须真实为 `BCE`
+- 必须生成 `context/generated/chapter_XXX/bce_write_meta.json`
+- 未通过 `validate_chapter_gate.py` 一律视为写作失败
+- 明确禁止人工替代 BCE 正文写作；BCE 失败时，本章停止，不得继续放行
 
 **失败回滚**：
 
@@ -169,6 +173,7 @@
 - 综合建议为 `PASS`
 - 钩子评分 `>= 3/5`
 - 无重大设定矛盾
+- 草稿已先通过 `validate_chapter_gate.py`
 
 **失败回滚**：
 
@@ -193,6 +198,7 @@
 **通过标准**：
 
 - 综合评分 `>= 3/5`
+- 草稿已先通过 `validate_chapter_gate.py`
 
 **失败回滚**：
 
@@ -256,6 +262,7 @@ python3 ./scripts/append_outline_log.py \
 
 - 最终结论 `PASS`
 - 连载感评分 `>= 3/5`
+- 草稿已先通过 `validate_chapter_gate.py`
 
 **失败回滚**：
 
@@ -298,6 +305,9 @@ python3 ./scripts/append_outline_log.py \
 - 跳过上下文压缩包直接裸跑全文
 - 用同一份正文自评后直接宣布完成
 - 手工修改 `OUTLINE.md` 日志但不走脚本
+- BCE 写作失败后由人工直接补正文继续放行
+- 未生成 BCE 元数据文件就继续审校
+- 字数不在 `3500-4500` 仍继续日志、Telegram、GitHub
 
 ## 六、推荐执行顺序
 
@@ -317,6 +327,8 @@ python3 ./scripts/append_outline_log.py \
 - [ ] `TELEGRAM_BOT_TOKEN` 已加载
 - [ ] BCE smoke test 通过
 - [ ] 本章字数在 3500-4500
+- [ ] `context/generated/chapter_XXX/bce_write_meta.json` 已生成
+- [ ] `provider_name = BCE`
 - [ ] Step 3 通过
 - [ ] Step 4 通过
 - [ ] `OUTLINE.md` 已通过脚本追加日志

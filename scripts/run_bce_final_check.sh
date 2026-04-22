@@ -36,11 +36,16 @@ mkdir -p "$REVIEWS_DIR"
 BASENAME="$(basename "$DRAFT_INPUT")"
 CHAPTER_ID="$(printf '%s' "$BASENAME" | sed -E 's/[^0-9]*([0-9]{1,}).*/\1/')"
 [ -n "$CHAPTER_ID" ] || CHAPTER_ID="manual"
+META_FILE="$ROOT_DIR/context/generated/chapter_$(printf '%03d' "$CHAPTER_ID")/bce_write_meta.json"
 OUTPUT_FILE="${3:-$REVIEWS_DIR/review_bce_final_${CHAPTER_ID}.md}"
 case "$OUTPUT_FILE" in
   /*) ;;
   *) OUTPUT_FILE="$ROOT_DIR/$OUTPUT_FILE" ;;
 esac
+
+python3 "$ROOT_DIR/scripts/validate_chapter_gate.py" \
+  --draft "$DRAFT_INPUT" \
+  --meta "$META_FILE" >/dev/null
 
 PROMPT_FILE="$(mktemp)"
 trap 'rm -f "$PROMPT_FILE"' EXIT

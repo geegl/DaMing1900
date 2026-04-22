@@ -29,6 +29,7 @@ fi
 
 CHAPTER_NUM="$(printf '%03d' "$CHAPTER_NUM_RAW")"
 OUTPUT_FILE="${3:-$ROOT_DIR/draft/chapter_${CHAPTER_NUM}_draft.md}"
+META_FILE="$ROOT_DIR/context/generated/chapter_${CHAPTER_NUM}/bce_write_meta.json"
 
 python3 "$ROOT_DIR/scripts/build_context_pack.py" "$CHAPTER_NUM_RAW" >/dev/null
 
@@ -56,6 +57,12 @@ python3 "$ROOT_DIR/scripts/bce_client.py" \
   --model "$MODEL" \
   --prompt-file "$PROMPT_FILE" \
   --output-file "$OUTPUT_FILE" \
+  --output-meta-file "$META_FILE" \
+  --require-provider-name BCE \
   --max-tokens 12000 >/dev/null
 
-echo "BCE 正文完成：$OUTPUT_FILE"
+python3 "$ROOT_DIR/scripts/validate_chapter_gate.py" \
+  --draft "$OUTPUT_FILE" \
+  --meta "$META_FILE" >/dev/null
+
+echo "BCE 正文完成并通过硬门槛：$OUTPUT_FILE"
