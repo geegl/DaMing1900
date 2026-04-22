@@ -11,6 +11,9 @@
 - `chapter_policy.md`
   前 100 章的章节类型判定规则。用于约束什么情况必须标成 `key`，避免章型漂移。
 
+- `restart_checklist_041_065.md`
+  第 41-65 章重启时的执行清单。用于逐项核对写作 gate、审校、日志、Telegram 与 GitHub 放行，不再靠临时记忆。
+
 ## 设计原则
 
 1. `OUTLINE.md` 负责讲故事、讲节奏、讲长线推进。
