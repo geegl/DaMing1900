@@ -23,8 +23,8 @@
 - `act2_setting_notes.md`
   第二幕专属设定草案，优先收纳海军改革、全球补给链、郑和遗脉、国内反扑机制与思想推进。
 
-- `act2_detailed_outline_101_250.md`
-  第二幕 `101-250` 的逐章细化执行镜像。它从 `OUTLINE.md` 的第二幕细纲中提取，方便在 `design/` 层集中查看和执行，不替代 `OUTLINE.md` 的剧情真源地位。
+- `act2_detailed_outline_101_280.md`
+  第二幕 `101-280` 的逐章细化执行镜像。它从 `OUTLINE.md` 的第二幕细纲中提取，方便在 `design/` 层集中查看和执行，不替代 `OUTLINE.md` 的剧情真源地位。
 
 ## 设计原则
 
