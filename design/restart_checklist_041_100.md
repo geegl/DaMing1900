@@ -384,7 +384,9 @@ python3 scripts/count_detailed.py chapters/chapter_XXX.md
 
 ## 十一、GitHub 放行检查
 
-每一批 `5` 章结束后，才允许推送。
+每一批 `5` 章结束后，**必须**执行以下操作：
+
+### A. 推送前检查
 
 本批推送前必须全部满足：
 
@@ -393,6 +395,40 @@ python3 scripts/count_detailed.py chapters/chapter_XXX.md
 - [ ] 本批 5 章三轮审校文件齐全
 - [ ] 本批 5 章日志已回填
 - [ ] 本批 Telegram 已全部成功
+- [ ] 本批 5 章字数全部达标（用 `count_detailed.py` 验证）
+
+### B. 文档更新要求
+
+每完成 5 章，**必须**更新以下文档：
+
+- [ ] `OUTLINE.md` - 更新章节日志状态
+- [ ] 检查 `design/chapter_types.json` 是否需要调整
+- [ ] 如有新增设定，更新 `BIBLE.md`
+
+### C. 推送执行
+
+```bash
+# 统计本批字数
+for ch in XX XX+1 XX+2 XX+3 XX+4; do
+  python3 scripts/count_detailed.py chapters/chapter_0$ch.md
+done
+
+# 添加所有文件
+git add chapters/ draft/ reviews/ context/ OUTLINE.md
+
+# 提交
+git commit -m "feat: 完成第XX-XX章写作（共5章，约X万字）"
+
+# 推送
+git push origin main
+```
+
+### D. 禁止行为
+
+- [ ] 不得跳过 5 章批次推送
+- [ ] 不得在批次未完成时推送
+- [ ] 不得在字数不达标时推送
+- [ ] 不得遗漏文档更新
 
 若有任一章仍未满足：
 
