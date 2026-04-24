@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(chmod +x /Users/roven/Documents/Trae/Daming1900/send_telegram.sh)",
+      "Bash(export TELEGRAM_BOT_TOKEN=\"8143117746:AAG25K1aaP4_nU6ESxWRbodfN-ry70V5ob8\")",
+      "Bash(awk '{print $1}')",
+      "Bash(python3 -c ' *)",
+      "Skill(codex:rescue)",
+      "Skill(codex:rescue:*)",
+      "Bash(./send_telegram.sh 第1章《炮台夜雨》 3681 4 3.5 谢长庚在大沽口炮台修复气机回转阀，八国联军来袭，他临时绕行备用管路完成修复，炮台成功参战。战后在废墟发现带兰芳印章的欧洲文字纸张。 无)",
+      "Bash(node /Users/roven/.claude/plugins/cache/openai-codex/codex/1.0.4/scripts/codex-companion.mjs task '写《大明1900》第二章《格物司的图纸》小说正文。 *)",
+      "Bash(node /Users/roven/.claude/plugins/cache/openai-codex/codex/1.0.4/scripts/codex-companion.mjs task '你是《大明1900》主笔写作Agent。任务：生成第三章节拍表，然后直接写出完整章节正文。 *)"
+    ]
+  }
+}
