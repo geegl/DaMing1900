@@ -122,8 +122,8 @@
 **通过标准**：
 
 - 可直接支持章型分流写作：
-  - `normal`：3500-5500汉字
-  - `key`：5000-6500汉字
+  - `normal`：3500-7000汉字（超过5500记WARN）
+  - `key`：5000-8000汉字（超过6500记WARN）
 - 不与 `OUTLINE.md`、`BIBLE.md` 冲突
 - 已明确普通章 / 关键章分流
 
@@ -159,8 +159,8 @@
 **硬约束**：
 
 - **字数要求**：
-  - normal 章节：汉字 `3500-5500`
-  - key 章节：汉字 `5000-6500`
+  - normal 章节：汉字 `3500-7000`（`5501-7000` 记 WARN）
+  - key 章节：汉字 `5000-8000`（`6501-8000` 记 WARN）
 - 第三人称限制视角
 - 对话符合人物音色
 - 结尾必须有强钩子
@@ -192,7 +192,9 @@ python3 scripts/count_detailed.py chapters/chapter_XXX.md
 
 1. 以 **汉字数** 为唯一判定标准
 2. 标点、字母、数字不计入字数要求
-3. 汉字数不达标 = 写作失败，必须返回重写
+3. 低于下限 = 写作失败，必须返回重写
+4. 高于建议上限但不超过宽松上限 = `WARN`，允许继续
+5. 超出宽松上限 = `WARN`，建议人工复核节奏
 4. 统计时自动跳过标题行（以 `#` 开头的行）
 
 **失败回滚**：
@@ -367,8 +369,8 @@ python3 ./scripts/append_outline_log.py \
 - 手工修改 `OUTLINE.md` 日志但不走脚本
 - BCE 写作失败后由人工直接补正文继续放行
 - 未生成 BCE 元数据文件就继续审校
-- 普通章字数不在 `3500-5500` 仍继续日志、Telegram、GitHub
-- 关键章字数不在 `5000-6500` 仍继续日志、Telegram、GitHub
+- 普通章低于 `3500` 仍继续日志、Telegram、GitHub
+- 关键章低于 `5000` 仍继续日志、Telegram、GitHub
 - Codex 二审阶段探测或切换到 `gpt-5.5 / gpt-5.4` 以外的模型
 
 ## 六、推荐执行顺序
@@ -388,8 +390,8 @@ python3 ./scripts/append_outline_log.py \
 
 - [ ] `TELEGRAM_BOT_TOKEN` 已加载
 - [ ] BCE smoke test 通过
-- [ ] 若为 `normal`，本章汉字数在 `3500-5500`
-- [ ] 若为 `key`，本章汉字数在 `5000-6500`
+- [ ] 若为 `normal`，本章汉字数不少于 `3500`
+- [ ] 若为 `key`，本章汉字数不少于 `5000`
 - [ ] `context/generated/chapter_XXX/bce_write_meta.json` 已生成
 - [ ] `provider_name = BCE`
 - [ ] Step 3 通过

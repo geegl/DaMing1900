@@ -67,25 +67,39 @@ def main() -> int:
     chapter_num = infer_chapter_number(draft_path)
     chapter_type = args.chapter_type or load_chapter_type(chapter_num)
     thresholds = {
-        "normal": (3500, 5500),
-        "key": (5000, 6500),
+        "normal": (3500, 7000),
+        "key": (5000, 8000),
+    }
+    warn_thresholds = {
+        "normal": 5500,
+        "key": 6500,
     }
     min_chars, max_chars = thresholds[chapter_type]
+    warn_chars = warn_thresholds[chapter_type]
     actual_chars = count_body_hanzi(draft_path.read_text())
 
     if provider_name != args.require_provider:
         raise SystemExit(f"FAIL: provider_name={provider_name}，要求 {args.require_provider}")
     if not model:
         raise SystemExit("FAIL: 未记录模型名")
-    if actual_chars < min_chars or actual_chars > max_chars:
+    if actual_chars < min_chars:
         raise SystemExit(
-            f"FAIL: 第 {chapter_num} 章类型 {chapter_type}，汉字数 {actual_chars} 不在 {min_chars}-{max_chars} 范围内"
+            f"FAIL: 第 {chapter_num} 章类型 {chapter_type}，汉字数 {actual_chars} 低于下限 {min_chars}"
         )
     if output_chars <= 0:
         raise SystemExit("FAIL: BCE 元数据缺少有效输出长度")
 
+    status = "PASS"
+    note = ""
+    if actual_chars > warn_chars:
+        status = "WARN"
+        note = f" warn=超出建议上限{warn_chars}，但仍在可放行范围内"
+    if actual_chars > max_chars:
+        status = "WARN"
+        note = f" warn=超出宽松上限{max_chars}，建议人工复核节奏"
+
     print(
-        f"PASS: chapter={chapter_num} type={chapter_type} provider={provider_name} model={model} hanzi={actual_chars} meta_output_chars={output_chars}"
+        f"{status}: chapter={chapter_num} type={chapter_type} provider={provider_name} model={model} hanzi={actual_chars} meta_output_chars={output_chars}{note}"
     )
     return 0
 

@@ -103,10 +103,10 @@
 - `draft/chapter_003_draft.md`
 - `context/generated/chapter_003/bce_write_meta.json`
 
-若 `provider_name` 不是 `BCE`，或正文汉字数不符合章型要求，脚本会直接失败：
+若 `provider_name` 不是 `BCE`，或正文汉字数低于章型下限，脚本会直接失败：
 
-- `normal`：`3500-5500` 汉字
-- `key`：`5000-6500` 汉字
+- `normal`：低于 `3500` 汉字直接失败；`3500-7000` 可放行，超过 `5500` 记为 WARN
+- `key`：低于 `5000` 汉字直接失败；`5000-8000` 可放行，超过 `6500` 记为 WARN
 
 ### BCE 一致性校对
 
