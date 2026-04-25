@@ -398,3 +398,4 @@ python3 ./scripts/append_outline_log.py \
 - [ ] `chapters/chapter_XXX.md` 已保存
 - [ ] Step 6 通过
 - [ ] Telegram 已收到通知
+- [ ] 若本章章号为 `5` 的倍数（如 `145/150/155/160`），已完成 GitHub 同步

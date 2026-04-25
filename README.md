@@ -199,6 +199,12 @@ git status --short
 - `scripts/`
 - `context/generated/.gitkeep`
 
+GitHub 同步规则：
+
+- 按章节号锚点同步，不按滑动批次同步
+- 每当完成章号命中 `5` 的倍数时，必须同步一次 GitHub
+- 例如：`145 / 150 / 155 / 160`
+
 ## 安全约束
 
 - 不将任何 token、密钥或本地账号配置写入仓库
