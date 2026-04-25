@@ -232,6 +232,11 @@ python3 scripts/count_detailed.py chapters/chapter_XXX.md
 
 **执行者**：Codex
 
+**允许模型**：
+
+- `gpt-5.5`（默认）
+- `gpt-5.4`
+
 **执行命令**：
 
 ```bash
@@ -239,6 +244,12 @@ python3 scripts/count_detailed.py chapters/chapter_XXX.md
 ```
 
 **目标**：负责节奏、句式单调、人物音色漂移、AI 痕迹、场景真实感。
+
+**硬约束**：
+
+- 禁止在二审前后探测其他模型
+- 禁止切换到 `gpt-4o-mini`、`oss`、`ollama`、`lmstudio`
+- 若需从 `gpt-5.5` 降到 `gpt-5.4`，只能显式设置 `CODEX_REVIEW_MODEL=gpt-5.4`
 
 **输出**：
 
@@ -358,6 +369,7 @@ python3 ./scripts/append_outline_log.py \
 - 未生成 BCE 元数据文件就继续审校
 - 普通章字数不在 `3500-4500` 仍继续日志、Telegram、GitHub
 - 关键章字数不在 `5000-6000` 仍继续日志、Telegram、GitHub
+- Codex 二审阶段探测或切换到 `gpt-5.5 / gpt-5.4` 以外的模型
 
 ## 六、推荐执行顺序
 

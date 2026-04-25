@@ -3,6 +3,15 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 REVIEWS_DIR="$ROOT_DIR/reviews/codex"
+REVIEW_MODEL="${CODEX_REVIEW_MODEL:-gpt-5.5}"
+
+case "$REVIEW_MODEL" in
+  gpt-5.5|gpt-5.4) ;;
+  *)
+    echo "错误：Codex 二审只允许 gpt-5.5 或 gpt-5.4，当前为 $REVIEW_MODEL" >&2
+    exit 1
+    ;;
+esac
 
 usage() {
   cat <<'EOF'
@@ -84,7 +93,8 @@ codex exec \
   --skip-git-repo-check \
   --dangerously-bypass-approvals-and-sandbox \
   -C "$ROOT_DIR" \
+  -m "$REVIEW_MODEL" \
   -o "$OUTPUT_FILE" \
   "$(cat "$PROMPT_FILE")"
 
-echo "Codex 二次校对完成：$OUTPUT_FILE"
+echo "Codex 二次校对完成：$OUTPUT_FILE (model=$REVIEW_MODEL)"

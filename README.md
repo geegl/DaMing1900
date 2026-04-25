@@ -128,6 +128,19 @@
 
 - `reviews/codex/`
 
+固定规则：
+
+- Codex CLI 二审只允许 `gpt-5.5` 或 `gpt-5.4`
+- 默认使用 `gpt-5.5`
+- 如需降级，只允许显式设置：
+
+```bash
+CODEX_REVIEW_MODEL=gpt-5.4 ./scripts/run_codex_review.sh draft/chapter_003_draft.md
+```
+
+- 禁止模型探测
+- 禁止切换到 `gpt-4o-mini`、`oss`、`ollama`、`lmstudio`
+
 ### 自动回填章节日志
 
 ```bash
