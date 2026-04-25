@@ -121,7 +121,9 @@
 
 **通过标准**：
 
-- 可直接支持 3500-4500 字写作
+- 可直接支持章型分流写作：
+  - `normal`：3500-4500汉字
+  - `key`：5000-6000汉字
 - 不与 `OUTLINE.md`、`BIBLE.md` 冲突
 - 已明确普通章 / 关键章分流
 
@@ -157,8 +159,8 @@
 **硬约束**：
 
 - **字数要求**：
-  - normal 章节：汉字 >= 3000
-  - key 章节：汉字 >= 5000
+  - normal 章节：汉字 `3500-4500`
+  - key 章节：汉字 `5000-6000`
 - 第三人称限制视角
 - 对话符合人物音色
 - 结尾必须有强钩子
@@ -354,7 +356,8 @@ python3 ./scripts/append_outline_log.py \
 - 手工修改 `OUTLINE.md` 日志但不走脚本
 - BCE 写作失败后由人工直接补正文继续放行
 - 未生成 BCE 元数据文件就继续审校
-- 字数不在 `3500-4500` 仍继续日志、Telegram、GitHub
+- 普通章字数不在 `3500-4500` 仍继续日志、Telegram、GitHub
+- 关键章字数不在 `5000-6000` 仍继续日志、Telegram、GitHub
 
 ## 六、推荐执行顺序
 
@@ -373,7 +376,8 @@ python3 ./scripts/append_outline_log.py \
 
 - [ ] `TELEGRAM_BOT_TOKEN` 已加载
 - [ ] BCE smoke test 通过
-- [ ] 本章字数在 3500-4500
+- [ ] 若为 `normal`，本章汉字数在 `3500-4500`
+- [ ] 若为 `key`，本章汉字数在 `5000-6000`
 - [ ] `context/generated/chapter_XXX/bce_write_meta.json` 已生成
 - [ ] `provider_name = BCE`
 - [ ] Step 3 通过

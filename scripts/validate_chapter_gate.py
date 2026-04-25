@@ -15,20 +15,40 @@ def resolve_path(raw: str) -> Path:
     return p
 
 
-def count_body_chars(text: str) -> int:
+def count_body_hanzi(text: str) -> int:
     lines = text.splitlines()
     if lines and lines[0].startswith("# "):
         lines = lines[1:]
     body = "\n".join(lines)
-    return len(re.sub(r"\s+", "", body))
+    return len(re.findall(r"[一-龥]", body))
+
+
+def infer_chapter_number(path: Path) -> str:
+    m = re.search(r"chapter_(\d{3})", path.name)
+    if not m:
+        raise SystemExit(f"FAIL: 无法从文件名推断章节号 {path.name}")
+    return m.group(1)
+
+
+def load_chapter_type(chapter_num: str) -> str:
+    chapter_types = ROOT / "design" / "chapter_types.json"
+    if not chapter_types.exists():
+        raise SystemExit(f"FAIL: 找不到章节类型真源 {chapter_types}")
+    data = json.loads(chapter_types.read_text())
+    entry = data.get(chapter_num)
+    if not entry:
+        raise SystemExit(f"FAIL: chapter_types.json 缺少第 {chapter_num} 章条目")
+    chapter_type = entry.get("chapter_type")
+    if chapter_type not in {"normal", "key"}:
+        raise SystemExit(f"FAIL: 第 {chapter_num} 章 chapter_type 非法：{chapter_type}")
+    return chapter_type
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="章节准入硬门槛校验")
     parser.add_argument("--draft", required=True, help="草稿文件")
     parser.add_argument("--meta", required=True, help="BCE 写作元数据文件")
-    parser.add_argument("--min-chars", type=int, default=3500)
-    parser.add_argument("--max-chars", type=int, default=4500)
+    parser.add_argument("--chapter-type", choices=["normal", "key"], help="可选；不传则按章节号自动读取")
     parser.add_argument("--require-provider", default="BCE")
     args = parser.parse_args()
 
@@ -44,21 +64,28 @@ def main() -> int:
     provider_name = meta.get("provider_name", "")
     model = meta.get("model", "")
     output_chars = int(meta.get("output_chars", 0))
-    actual_chars = count_body_chars(draft_path.read_text())
+    chapter_num = infer_chapter_number(draft_path)
+    chapter_type = args.chapter_type or load_chapter_type(chapter_num)
+    thresholds = {
+        "normal": (3500, 4500),
+        "key": (5000, 6000),
+    }
+    min_chars, max_chars = thresholds[chapter_type]
+    actual_chars = count_body_hanzi(draft_path.read_text())
 
     if provider_name != args.require_provider:
         raise SystemExit(f"FAIL: provider_name={provider_name}，要求 {args.require_provider}")
     if not model:
         raise SystemExit("FAIL: 未记录模型名")
-    if actual_chars < args.min_chars or actual_chars > args.max_chars:
+    if actual_chars < min_chars or actual_chars > max_chars:
         raise SystemExit(
-            f"FAIL: 字数 {actual_chars} 不在 {args.min_chars}-{args.max_chars} 范围内"
+            f"FAIL: 第 {chapter_num} 章类型 {chapter_type}，汉字数 {actual_chars} 不在 {min_chars}-{max_chars} 范围内"
         )
     if output_chars <= 0:
         raise SystemExit("FAIL: BCE 元数据缺少有效输出长度")
 
     print(
-        f"PASS: provider={provider_name} model={model} body_chars={actual_chars} meta_output_chars={output_chars}"
+        f"PASS: chapter={chapter_num} type={chapter_type} provider={provider_name} model={model} hanzi={actual_chars} meta_output_chars={output_chars}"
     )
     return 0
 

@@ -54,6 +54,34 @@ print("glm-5" if chapter_type == "key" else default_model)
 PY
 )"
 fi
+CHAPTER_TYPE="$(python3 - "$ROOT_DIR" "$CHAPTER_NUM" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+root = Path(sys.argv[1])
+chapter_num = sys.argv[2]
+path = root / "design" / "chapter_types.json"
+if not path.exists():
+    raise SystemExit("缺少 design/chapter_types.json")
+
+mapping = json.loads(path.read_text())
+entry = mapping.get(chapter_num)
+if not entry:
+    raise SystemExit(f"chapter_types.json 缺少第 {chapter_num} 章")
+
+chapter_type = entry.get("chapter_type")
+if chapter_type not in {"normal", "key"}:
+    raise SystemExit(f"第 {chapter_num} 章 chapter_type 非法：{chapter_type}")
+
+print(chapter_type)
+PY
+)"
+if [ "$CHAPTER_TYPE" = "key" ]; then
+  TARGET_RANGE="5000-6000汉字"
+else
+  TARGET_RANGE="3500-4500汉字"
+fi
 OUTPUT_FILE="${3:-$ROOT_DIR/draft/chapter_${CHAPTER_NUM}_draft.md}"
 META_FILE="$ROOT_DIR/context/generated/chapter_${CHAPTER_NUM}/bce_write_meta.json"
 
@@ -68,7 +96,7 @@ cat > "$PROMPT_FILE" <<EOF
 
 写作要求：
 1. 只输出正文，不解释，不做提纲，不做点评
-2. 目标字数 3500-4500 字
+2. 本章类型为 ${CHAPTER_TYPE}，目标字数 ${TARGET_RANGE}
 3. 第三人称限制视角，紧贴谢长庚
 4. 开头 200 字内必须进入具体场景
 5. 结尾必须保留强钩子
