@@ -67,8 +67,8 @@ def main() -> int:
     chapter_num = infer_chapter_number(draft_path)
     chapter_type = args.chapter_type or load_chapter_type(chapter_num)
     thresholds = {
-        "normal": (3500, 4500),
-        "key": (5000, 6000),
+        "normal": (3500, 5500),
+        "key": (5000, 6500),
     }
     min_chars, max_chars = thresholds[chapter_type]
     actual_chars = count_body_hanzi(draft_path.read_text())

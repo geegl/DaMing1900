@@ -250,8 +250,8 @@ python3 scripts/count_detailed.py chapters/chapter_XXX.md
 
 | 章型 | 汉字要求 | 不达标处理 |
 |------|----------|------------|
-| normal | 3500-4500 | 返回重写 |
-| key | 5000-6000 | 返回重写 |
+| normal | 3500-5500 | 返回重写 |
+| key | 5000-6500 | 返回重写 |
 
 **判定规则**：
 
@@ -266,8 +266,8 @@ python3 scripts/count_detailed.py chapters/chapter_XXX.md
 
 - [ ] 没有 `bce_write_meta.json`
 - [ ] `provider_name` 不是 `BCE`
-- [ ] `normal` 章汉字数 `< 3500` 或 `> 4500`
-- [ ] `key` 章汉字数 `< 5000` 或 `> 6000`
+- [ ] `normal` 章汉字数 `< 3500` 或 `> 5500`
+- [ ] `key` 章汉字数 `< 5000` 或 `> 6500`
 - [ ] 明显不是按本章章型对应模型写出
 
 若失败：
@@ -445,7 +445,7 @@ git push origin main
 
 - [ ] `chapter_type` 是否正确进入上下文包
 - [ ] 写作模型是否与章型一致
-- [ ] **字数是否达标**（normal `3500-4500` 汉字，key `5000-6000` 汉字）
+- [ ] **字数是否达标**（normal `3500-5500` 汉字，key `5000-6500` 汉字）
 - [ ] 关键人物音色是否稳定
 - [ ] 本章是否真配得上当前 `chapter_type`
 

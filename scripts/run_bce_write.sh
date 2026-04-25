@@ -78,9 +78,9 @@ print(chapter_type)
 PY
 )"
 if [ "$CHAPTER_TYPE" = "key" ]; then
-  TARGET_RANGE="5000-6000汉字"
+  TARGET_RANGE="5000-6500汉字"
 else
-  TARGET_RANGE="3500-4500汉字"
+  TARGET_RANGE="3500-5500汉字"
 fi
 OUTPUT_FILE="${3:-$ROOT_DIR/draft/chapter_${CHAPTER_NUM}_draft.md}"
 META_FILE="$ROOT_DIR/context/generated/chapter_${CHAPTER_NUM}/bce_write_meta.json"
