@@ -72,14 +72,38 @@ python3 scripts/build_context_pack.py {{chapter_no}}
 - `provider_name` 必须是 `BCE`
 - 必须通过 `scripts/validate_chapter_gate.py`
 - 不允许人工代写正文
-- 正文首行必须是章节标题，格式为：`# 第X章 章名`
+- 正文首行必须是章节标题，格式为：`# 第X章 章名`（从 `chapter_types.json` 读取）
 - 开头前 `150-250` 汉字必须进入具体场景
 - 开头前三句至少出现一个：悬念 / 冲突 / 反常细节
 - 结尾最后 `150-250` 汉字必须是钩子段
 - 禁止 AI 腔、总结腔、说明腔
 - 禁止使用 `（本章完）`
 - 禁止使用阶段总结、提纲式收束、后续计划说明
-- 禁止出现类似“第二幕第一阶段，到此结束”“第二幕第二阶段，正式开始”“明天还有很多事。一步一步来”这类元叙事句
+- 禁止出现类似”第二幕第一阶段，到此结束””第二幕第二阶段，正式开始””明天还有很多事。一步一步来”这类元叙事句
+
+**标题验证（必须执行）**：
+
+写作完成后，必须验证草稿首行是否有标题：
+
+```bash
+# 检查首行是否有标题
+head -1 draft/chapter_{{chapter_no}}_draft.md | grep -q “^# 第”
+```
+
+若首行无标题，必须执行自动补充：
+
+```bash
+# 从 chapter_types.json 读取标题并补充
+python3 -c “
+import json
+num = '{{chapter_no}}'
+data = json.load(open('design/chapter_types.json'))
+title = data.get(num, {}).get('title', '未知标题')
+print(f'# 第{num}章 {title}')
+“
+```
+
+将输出的标题行插入到草稿文件开头，然后继续后续步骤。
 
 ### Step 3 一致性校对
 
@@ -118,6 +142,41 @@ python3 scripts/build_context_pack.py {{chapter_no}}
 
 ### Step 5 日志回填
 
+**标题检查（必须执行）**：
+
+复制到 `chapters/` 目录前，必须验证草稿首行是否有正确标题格式：
+
+```bash
+# 检查首行是否为标准标题格式
+first_line=$(head -1 draft/chapter_{{chapter_no}}_draft.md)
+echo "$first_line" | grep -q "^# 第.*章"
+```
+
+若首行无标题或格式错误，必须执行自动补充：
+
+```bash
+# 自动补充标题脚本
+python3 << 'EOF'
+import json
+num = '{{chapter_no}}'
+with open('design/chapter_types.json') as f:
+    data = json.load(f)
+title = data.get(num, {}).get('title', '未知标题')
+title_line = f'# 第{num}章 {title}\n\n'
+
+with open(f'draft/chapter_{num}_draft.md', 'r') as f:
+    content = f.read()
+
+# 检查是否已有标题
+if content.startswith('# 第'):
+    print(f'第{num}章: 已有标题，跳过')
+else:
+    with open(f'draft/chapter_{num}_draft.md', 'w') as f:
+        f.write(title_line + content)
+    print(f'第{num}章: 已补充标题「{title}」')
+EOF
+```
+
 终稿保存到：
 
 - `chapters/chapter_{{chapter_no}}.md`
@@ -153,6 +212,7 @@ Telegram 失败要报告，但不能伪装成已发送。
 5. 不允许用旧字数标准（如 `6000-10000`）
 6. 不允许把第二幕写成纯线性航海爽文，必须保留补给、组织、政治、思想代价
 7. 不允许在 Codex 二审前后探测其他模型或 provider
+8. **不允许跳过标题验证**：每章必须有正确格式的标题 `# 第X章 章名`，从 `chapter_types.json` 读取
 
 ## 五、问题处理规则
 

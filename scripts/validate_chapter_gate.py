@@ -23,6 +23,32 @@ def count_body_hanzi(text: str) -> int:
     return len(re.findall(r"[一-龥]", body))
 
 
+def validate_title_format(text: str, chapter_num: str) -> tuple[bool, str]:
+    """验证首行是否为正确格式的章节标题。
+
+    返回: (is_valid, error_message)
+    """
+    lines = text.strip().splitlines()
+    if not lines:
+        return False, "草稿文件为空"
+
+    first_line = lines[0].strip()
+
+    # 检查标题格式：# 第X章 章名
+    title_pattern = rf"^#\s*第{chapter_num}章\s+.+$"
+    if not re.match(title_pattern, first_line):
+        # 检查是否有任何标题格式
+        if not first_line.startswith("# "):
+            return False, f"首行缺少标题，当前首行: {first_line[:50]}..."
+        # 有标题但格式不对
+        if not re.match(r"^#\s*第\d+章\s+.+$", first_line):
+            return False, f"标题格式错误，应为 '# 第{chapter_num}章 章名'，实际为: {first_line[:50]}..."
+        # 章节号不对
+        return False, f"标题章节号错误，应为第{chapter_num}章"
+
+    return True, ""
+
+
 def infer_chapter_number(path: Path) -> str:
     m = re.search(r"chapter_(\d{3})", path.name)
     if not m:
@@ -66,6 +92,16 @@ def main() -> int:
     output_chars = int(meta.get("output_chars", 0))
     chapter_num = infer_chapter_number(draft_path)
     chapter_type = args.chapter_type or load_chapter_type(chapter_num)
+
+    # 验证标题格式
+    draft_text = draft_path.read_text()
+    title_valid, title_error = validate_title_format(draft_text, chapter_num)
+    if not title_valid:
+        raise SystemExit(f"FAIL: {title_error}")
+
+    # 提取标题用于输出
+    first_line = draft_text.strip().splitlines()[0] if draft_text.strip() else ""
+    title_display = first_line[2:] if first_line.startswith("# ") else "无标题"
     thresholds = {
         "normal": (3500, 7000),
         "key": (5000, 8000),
@@ -99,7 +135,7 @@ def main() -> int:
         note = f" warn=超出宽松上限{max_chars}，建议人工复核节奏"
 
     print(
-        f"{status}: chapter={chapter_num} type={chapter_type} provider={provider_name} model={model} hanzi={actual_chars} meta_output_chars={output_chars}{note}"
+        f"{status}: chapter={chapter_num} type={chapter_type} provider={provider_name} model={model} hanzi={actual_chars} title=\"{title_display}\" meta_output_chars={output_chars}{note}"
     )
     return 0
 
