@@ -75,7 +75,7 @@ def main() -> int:
     parser.add_argument("--draft", required=True, help="草稿文件")
     parser.add_argument("--meta", required=True, help="BCE 写作元数据文件")
     parser.add_argument("--chapter-type", choices=["normal", "key"], help="可选；不传则按章节号自动读取")
-    parser.add_argument("--require-provider", default="BCE")
+    parser.add_argument("--require-provider", default="MIMO")
     args = parser.parse_args()
 
     draft_path = resolve_path(args.draft)

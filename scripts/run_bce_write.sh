@@ -108,11 +108,12 @@ $(cat "$PACK_FILE")
 EOF
 
 python3 "$ROOT_DIR/scripts/bce_client.py" \
-  --model "$MODEL" \
+  --model "mimo-v2.5-pro" \
   --prompt-file "$PROMPT_FILE" \
   --output-file "$OUTPUT_FILE" \
   --output-meta-file "$META_FILE" \
-  --require-provider-name BCE \
+  --provider-id "0df8b733-0588-4de9-8385-cfd226f9326b" \
+  --require-provider-name "MIMO" \
   --max-tokens 12000 >/dev/null
 
 python3 "$ROOT_DIR/scripts/validate_chapter_gate.py" \

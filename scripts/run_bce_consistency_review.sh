@@ -79,9 +79,11 @@ $(cat "$DRAFT_INPUT")
 EOF
 
 python3 "$ROOT_DIR/scripts/bce_client.py" \
-  --model "$MODEL" \
+  --model "mimo-v2.5-pro" \
   --prompt-file "$PROMPT_FILE" \
   --output-file "$OUTPUT_FILE" \
+  --provider-id "0df8b733-0588-4de9-8385-cfd226f9326b" \
+  --require-provider-name "MIMO" \
   --max-tokens 8000 >/dev/null
 
 echo "BCE 一致性校对完成：$OUTPUT_FILE"
